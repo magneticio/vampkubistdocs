@@ -43,6 +43,15 @@ vampVersion: 0.7.0
 mode: IN_CLUSTER
 ```
 
+Only rootPassword, repoUsername, repoPassword are mandatory fields.
+
+Minimum configuration file is:
+```yaml
+rootPassword: root
+repoUsername: dockerhubrepousername
+repoPassword: dockerhubrepopassword
+```
+
 **rootPassword:** is the root user password for the installation.
 
 **databaseUrl:** is a comma separated list of MongoDB Urls in the form of mongo://host:port. You can leave it empty for deploying a new installation in your cluster.
