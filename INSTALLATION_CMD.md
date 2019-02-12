@@ -44,12 +44,18 @@ mode: IN_CLUSTER
 ```
 
 **rootPassword:** is the root user password for the installation.
+
 **databaseUrl:** is a comma separated list of MongoDB Urls in the form of mongo://host:port. You can leave it empty for deploying a new installation in your cluster.
+
 **databaseName:** is the database name in the MongoDB.
+
 **repoUsername:** is your docker hub username which has access to vamp kubist repository. **Ask us about it!**
+
 **repoPassword:** is your docker hub password which has access to vamp kubist repository. **Ask us about it!**
+
 **vampVersion:** is the version of the vamp kubist installation. This will be useful for updating the current installation.
-**mode:** is the mode of vamp kubist installation. This option gives vamp kubist hints about the environment that it is installed on. Valid values are in IN_CLUSTER and OUT_CLUSTER, which means that if vamp kubist is installed inside a kubernetes cluster or not. Inside a kubernetes cluster, vamp kubist will look for service account credentials.
+
+**mode:** is the mode of vamp kubist installation. This option gives vamp kubist hints about the environment that it is installed on. Valid values are in IN_CLUSTER and OUT_CLUSTER, which means that if vamp kubist is installed inside a kubernetes cluster or not. Inside a kubernetes cluster, vamp kubist will look for the service account credentials.
 
 
 Assuming, a valid config.yml file is available on your the folder, you can run:
