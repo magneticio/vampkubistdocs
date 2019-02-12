@@ -2,9 +2,6 @@
 
 * [Prerequisites](#prerequisites)
 * [Installation steps](#installation-steps)
- * [In cluster installation](#in-cluster-installation)
-    * [External database](#external-database)
- * [Out of Cluster installation](#out-of-cluster-installation)
 
 ## Prerequisites
 * An existing kubernetes cluster with Kubernetes version 1.9 or above installed.
