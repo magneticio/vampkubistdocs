@@ -69,6 +69,6 @@ Login with:
 vamp login --url https://ip:port --user root --cert ./cert.crt
 ```
 
-Copy paste the recommended command and login as root, it will ask for the password set up in the configuration file. Also, it is recommended to keep the certificate file. It is possible to get the certificate file by running the install command again.
+Copy paste the recommended command and login as root, it will ask for the password that is set up in the configuration file. Also, it is recommended to keep the certificate file. It is possible to get the certificate file by running the install command again.
 
 Configurations, basic setup is complete!
