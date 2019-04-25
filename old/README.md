@@ -1,12 +1,12 @@
-# Vamp Kubist Preview release
+# Vamp Lamia Alpha
 
-Kubist is a single Docker container that provides a REST API and React-based UI that you can use to:
+Lamia is a single Docker container that provides a REST API and React-based UI that you can use to:
 
 - gradually roll-out a new version of a service;
 - automatically rollback to the original version, in the case of errors and
 - apply routing conditions.
 
-To learn more about Vamp Kubist and what it can achieve you can check the following resources:
+To learn more about Vamp Lamia and what it can achieve you can check the following resources:
 
 * [Installation guidelines](INSTALLATION.md)
 * [Cluster setup](SETUP.md)

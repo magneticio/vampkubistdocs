@@ -1,0 +1,6 @@
+vampService: vamp-service-1
+destination: dest-1
+port: 9090
+subset: subset3
+updatePeriod: 30000
+updateStep: 10

@@ -1,0 +1,5 @@
+servers:
+  - port: 80
+    protocol: http
+    hosts:
+      - vamp-gw1.democluster.net

@@ -1,0 +1,4 @@
+metadata:
+  test: testvalue
+policyExecutor:
+  name: DefaultProjectPolicyExecutor
