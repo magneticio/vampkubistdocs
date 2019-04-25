@@ -61,7 +61,7 @@ metadata:
 Shortly after creating the namespace you will receive a notification from Lamia stating that a new Virtual Cluster has been found.
 You can then click on List Virtual Cluster and see it as shown below.
 
-![](images/screen1.png)
+![](../images/screen1.png)
 
 You can now edit the metadata of the Virtual Cluster.
 
@@ -72,7 +72,7 @@ For example, you can associate a Slack channel with a Virtual Cluster by adding 
 
 This will allow Lamia to send notifications to the specified Slack channel.
 
-![](images/screen2.png)
+![](../images/screen2.png)
 
 ## Creating an Application
 Once the Virtual Cluster is set up, you need to sure that the Deployments for your Application are created and running.
@@ -198,11 +198,11 @@ First, open the Virtual Cluster tab, click on List Virtual Cluster and select `v
 
 Now, you can open the Application tab, click on List Application and you will be presented with the list of the available applications.
 
-![](images/screen3.png)
+![](../images/screen3.png)
 
 Select `vamp-tutorial-app` to see the list of deployments you just created.
 
-![](images/screen4.png)
+![](../images/screen4.png)
 
 You can compare this with the information presented through `kubectl` by running the following command:
 
@@ -224,17 +224,17 @@ Now open the Service tab, click Others - Service - Create Service and enter the 
 - **Ports: Target Port**: the port on which the container accepts traffic, use `9090` for the tutorial
 - **Ports: Protocol**: the network protocol the service uses, use `TCP` for the tutorial
 
-![](images/screen5.png)
+![](../images/screen5.png)
 
 Then click Submit, to create the Service.
 If there were no errors, a Service named `vamp-tutorial-service` will be accessible internally to the Cluster.
 You can check the status of this Service using the UI by opening the Service tab, clicking on List Service and selecting `vamp-tutorial-service`.
 
-![](images/screen6.png)
+![](../images/screen6.png)
 
 To check if the Service was created correctly, click Details. You also have the options to Edit or Delete the Service.
 
-![](images/screen7.png)
+![](../images/screen7.png)
 
 You can compare this with the information presented through `kubectl` by running the following command:
 
@@ -248,17 +248,17 @@ So go back to the Cluster list and select your cluster. Then, in the metadata, a
 This is not strictly necessary for this tutorial but, if you don't do it, you will keep on getting notifications warning you that that information is missing.
 Open the Gateway tab, click Create Gateway and enter the following data, as shown in the screenshot below.
 
-![](images/screen8.png)
+![](../images/screen8.png)
 
 Then click Submit, to create the Gateway.
 If there were no errors, the `vamp-tutorial-service` will now be available externally.
 To find the external IP address the `vamp-tutorial-gateway` is using, open the Gateway tab and click on List Gateway.
 
-![](images/screen9.png)
+![](../images/screen9.png)
 
 Then select Details and you will find the generated url for your Service.
 
-![](images/screen10.png)
+![](../images/screen10.png)
 
 You can also retrieve this information using `kubectl` by running the following command:
 
@@ -290,11 +290,11 @@ A Destination Rule is a Istio resource that abstracts from the set of labels def
 Subsets are then referenced by Virtual Services in order to route traffic through the Service.
 You can create a new Destination Rule through Lamia by selecting Create DestinationRule and filling the presented form as shown below:
 
-![](images/screen11.png)
+![](../images/screen11.png)
 
 When you filled in the required configuration, just click submit and then check the result in List DestinationRule - details.
 
-![](images/screen12.png)
+![](../images/screen12.png)
 
 To retrieved the created resource through kubectl, run the following command:
 
@@ -313,7 +313,7 @@ To change this behaviour we need to create a Virtual Service that will sit in be
 
 Open the Virtual Service tab, click Create Virtual Service and enter the following data, as shown in the screenshot below.
 
-![](images/screen13.png)
+![](../images/screen13.png)
 
 Then click Submit, to create the Virtual Service.
 
@@ -321,7 +321,7 @@ If there were no errors, a Virtual Service named `vamp-tutorial-virtual-service`
 
 You can check the configuration of this Virtual Service using the UI by opening the Virtual Service tab, clicking on List Virtual Services and selecting `vamp-tutorial-virtual-service`. You should see a configuration like the one shown below.
 
-![](images/screen14.png)
+![](../images/screen14.png)
 
 This configuration tells Istio to distribute traffic equally (50%/50%) among the two versions.
 
@@ -371,7 +371,7 @@ You can then configure the route to forward all traffic towards subset1.
 The virtual service configuration will then look like the one shown below.
 
 
-![](images/screen15.png)
+![](../images/screen15.png)
 
 
 The effect of adding this new route is that requests with a `User-Agent` HTTP header that contains either "Chrome" or "Nexus 6P" will be equally split between subset1 and subset2, while all other requests will be sent to subset1.
@@ -384,7 +384,7 @@ Vamp Lamia allow users to specify Policies on Virtual Services, i.e. automated p
 When specifying a new Policy of this kind there are several options, let's start with the simplest one.
 Select Others - Virtual Services - List Virtual Service - edit and specify the values shown below in the Policies section, then submit.
 
-![](images/screen16.png)
+![](../images/screen16.png)
 
 What you just did will trigger an automated process that will gradually shift the weights towards your target (subset2 in this case).
 You will periodically get notifications that show the updates being applied to the virtual service.
@@ -398,7 +398,7 @@ Go back to the edit screen, remove the policy and reset the weights to 50/50, th
 Let's say for example you want to rerun the previous scenario, but checking the healthiness of the two subsets before applying changes.
 You can esaily achieve that by editing the Virtual Service as shown in the next image
 
-![](images/screen17.png)
+![](../images/screen17.png)
 
 To verify that everything is working as expected just run this command
 
@@ -467,17 +467,17 @@ Obviously nothing will happen unless you actually send requests to the service.
 There's an easy way to do that thanks to the specific image we are using for this tutorial.
 Go to List Gateway and open the details for the Gateway you previously created and click the link to your Service and add /ui at the end to get to this ui.
 
-![](images/screen18.png)
+![](../images/screen18.png)
 
 Now just input the url to your service ( http://vamp-tutorial-service:9090 ) into the empty field and this will both trigger continuous requests towards the service and show the real distribution over the two deployments, including the errors (highlighted in red).
 This tool is not really part of Vamp Lamia, but it comes in handy to test the behaviour of Virtual Services and Istio.
 
-![](images/screen19.png)
+![](../images/screen19.png)
 
 You can check the distribution of traffic both from the tool itself or by selecting List Virtual Service and clicking on metrics.
 This will present you with the interface shown below.
 
-![](images/screen20.png)
+![](../images/screen20.png)
 
 After you are done experimenting with this Policy you can edit the Virtual Service back to normal, but keep the deployments in the current state for the next steps.
 
@@ -486,7 +486,7 @@ After you are done experimenting with this Policy you can edit the Virtual Servi
 You managed to create a canary release Policy that takes into account the health of your application, but what if you wanted to use some different metric to control the behaviour of the policy?
 In order to do that you can edit the Virtual Service as shown below
 
-![](images/screen21.png)
+![](../images/screen21.png)
 
 As you can see besides changing the type of Policy you also need to specify the **metric** parameter which will tell Lamia which metric or combination of metrics to use.
 In this scenario the value we are using is:
@@ -520,7 +520,7 @@ if ( ( metric "vamp-tutorial-service" 9090 "subset1" "internal_upstream_rq_2xx" 
 
 in the value field for the metric parameter
 
-![](images/screen22.png)
+![](../images/screen22.png)
 
 As you can probably understand by looking at the expression above, this Policy will again replicate the behaviour of the previous Policies, but it will allow for much greater flexibility.
 You will now be able to specify different versions based on the conditions you are verifying and also to return no version at all (by returning nil) when you want the Policy to not apply any change.
@@ -537,7 +537,7 @@ Setting up all of the above for every new service can be pretty tedious and time
 Vamp Services are abstractions that group together a Service, a Destination Rule and a Virtual Service.
 To create a Vamp Service, select Vamp Service - Create Vamp Service from the menu and fill out the form as shown below.
 
-![](images/screen44.png)
+![](../images/screen44.png)
 
 As you can see we are referencing app1 in the application and specifiying basically the same values we used in the Service, Virtual Service and Destination rule examples from the previous sections.
 Once you submit a new Service, Destination Rule and Virtual Service with the name vamp-service-1 will be created automatically.
@@ -565,14 +565,14 @@ Since you already did that in the previous steps of this tutorial, you should be
 Just make sure to select the new Virtual Cluster vamp-demo before going onward.
 Also mind the fact that you should use a different hostname than the one we are using in the example.
 
-![](images/screen23.png)
+![](../images/screen23.png)
 
-![](images/screen24.png)
+![](../images/screen24.png)
 
 Once everything is ready you can set up the Experiment itself.
 Select Create Experiment and submit the following configuration.
 
-![](images/screen26.png)
+![](../images/screen26.png)
 
 To clarify a bit what is going to happen when you submit, let's first go through the purpose of each field:
 
@@ -587,7 +587,7 @@ When the form has been correctly filled and submitted the Experiment will first 
 By clicking on List Virtual Service and looking for the shop-vamp-service Virtual Service, you will be able to check its configuration, although you won't be able to change it or delete it directly.
 Below you can see how ths configuraiton should look:
 
-![](images/screen27.png)
+![](../images/screen27.png)
 
 We realise this configuration can feel rather obscure, so let's walk through it together.
 The Virtual Service defines three routes. The first two are easy to understand: they each lead to one of the deployed versions. The third one is evenly load balancing between two versions of a Cookie Server.
@@ -623,7 +623,7 @@ You can see below an example of such a json.
 In this sample the number of elements is the number of users that got to the landing page of the service we are testing, while the average and standard deviation are calculated over the number of successful interactions of each user, i.e. the interactions that reached the specified target.
 If you run the [demo-setup.sh](samples/experiment-demo/demo-setup.sh) script in the previous step, then the mock data source will already be deployed and all you need to do is set up the Experiment using the following configuration
 
-![](images/screen43.png)
+![](../images/screen43.png)
 
 Compared to the configuration used in the previous example the notable differences are that in this case you will be specifying a Data Source Path with value **http://vamp-datasource.vamp-test1.svc.cluster.local:9090/stats**, to tell Vamp to use the data source exposed by that Service, and you will also add a new metadata with key **complexmetricsdriver** and value **custom** in order to have Lamia use the custom implementation of the metrics driver. 
 Once the experiment has been set up, it will behave in the same way as the previous one, but using the newly defined data source.

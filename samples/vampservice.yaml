@@ -1,0 +1,16 @@
+gateways:
+  - gw-1
+hosts:
+  - vamp-gw1.democluster.net
+routes:
+  - protocol: http
+    weights:
+      - destination: dest-1
+        port: 9090
+        version: subset1
+        weight: 50
+      - destination: dest-1
+        port: 9090
+        version: subset2
+        weight: 50
+exposeInternally: true

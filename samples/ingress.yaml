@@ -1,0 +1,4 @@
+paths:
+  - path: /
+    port: 80
+    serviceName: svc2

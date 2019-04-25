@@ -1,0 +1,56 @@
+permissions:
+  project:
+    read: true
+    write: false
+    delete: false
+    editAccess: true
+  cluster:
+    read: true
+    write: true
+    delete: true
+    editAccess: true
+  virtualCluster:
+    read: true
+    write: true
+    delete: true
+    editAccess: true
+  deployment:
+    read: true
+    write: true
+    delete: true
+    editAccess: true
+  application:
+    read: true
+    write: true
+    delete: true
+    editAccess: true
+  destination:
+    read: true
+    write: true
+    delete: true
+    editAccess: true
+  vampService:
+    read: true
+    write: true
+    delete: true
+    editAccess: true
+  gateway:
+    read: true
+    write: true
+    delete: true
+    editAccess: true
+  serviceEntry:
+    read: true
+    write: true
+    delete: true
+    editAccess: true
+  canaryRelease:
+    read: true
+    write: true
+    delete: true
+    editAccess: true
+  experiment:
+    read: true
+    write: true
+    delete: true
+    editAccess: true

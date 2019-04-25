@@ -1,0 +1,16 @@
+vampServiceName: vamp-service-1
+period: 1
+step: 10
+destinations:
+  - destination: dest-1
+    tags:
+      - test1
+    port: 9090
+    subset: subset1
+    target: /endpoint1
+  - destination: dest-2
+    tags:
+      - test1
+    port: 9090
+    subset: subset1
+    target: /endpoint1
