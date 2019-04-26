@@ -39,7 +39,7 @@ databaseUrl:
 databaseName: vamp
 repoUsername: dockerhubrepousername
 repoPassword: dockerhubrepopassword
-vampVersion: 0.7.0
+imageTag: 0.7.8
 mode: IN_CLUSTER
 ```
 
@@ -63,7 +63,7 @@ Let's now go through all the configuration parameters to better understand what 
 
 **repoPassword:** is your docker hub password which has access to vamp kubist repository. **Ask us about it!**
 
-**vampVersion:** is the version of the vamp kubist installation. This will be useful for updating the current installation.
+**imageTag:** is the image tag of the vamp kubist installation. This will be useful for updating the current installation.
 
 **mode:** is the mode of the Vamp Kubist installation. This option gives vamp kubist hints about the environment that it is installed on. Valid values are in IN_CLUSTER and OUT_CLUSTER, depending on whether you want to install Vamp Kubist inside a kubernetes cluster or not. Inside a kubernetes cluster, vamp kubist will look for the service account credentials.
 

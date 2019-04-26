@@ -47,7 +47,7 @@ This will just specify an empty definition for the new project.
 Once the Project has been created it can be selected as the current project by running:
 
 ```shell
-vamp set project project1
+vamp config set -p project1
 ```
 
 At any time you can list the available projects by running 
@@ -217,7 +217,6 @@ At any time you can revoke a user's role with the command
 vamp revoke --user user1 --role project-admin -p project1
 ```
 
-
 ## Granting permissiosn to a user
 
 What, however, if we wanted to grant a user access to a very specific resource, rather than an entire project?
@@ -244,31 +243,57 @@ w = write
 d - delete
 a = edit access
 
-so if you specified a --permission parameter wiht value r you would be only granting read access to the target resource, while if you specified rda you would be specifying read, delete and edit access rights to said resource, but no write access.
+so if you specified a --permission parameter with value r you would be only granting read access to the target resource, while if you specified rda you would be specifying read, delete and edit access rights to said resource, but no write access.
 
 ## Cluster creation
 
-
-After setting up and selecting the new Project, it's time to do the same for the Cluster.
-This unfortunately still requires some manual operation.
-First of all you need to initialise the cluster by creating a namespace and Service Account that would grant Vamp Lamia the authorisations it requires to manage the Cluster itself, and then retrieve the Cluster url and the service account token and certificate.
-This may seem complex but you can just run 
+After setting the current project to project1, granting user user1 the appropriate role and logging in with its credentials, you can proceed with adding and bootstrapping a new cluster.
+First make sure you have installed kubectl and authenticated to the cluster you want to be managed by vamp Kubist. 
+The command line client will set up a service account user in your cluster and set up credentials to connect to your cluster in vamp.
+For this example, it is recommended that you have a cluster of at least 5 nodes, 2 CPU and 8 GB Ram per node. Otherwise you can have pending pods and initialisation will not finish.
+If everything is set, just run 
 
 ```
-./initialise-cluster.sh
+vamp bootstrap cluster cluster1
 ```
 
-and all the required operations will be performed, returning as an output the url, certificate and token.
-Once you have these values you can click on create Cluster in Vamp Lamia and fill out the form as shown below:
+A simple cluster configuration requires;
+* a url
+* a cacertdata
+* a serviceaccount_token
 
-![](../images/screen42.png)
+You can check if your cluster is properly configured by running a get to the cluster.
 
-Once you submit the Cluster will be imported in Lamia
+```shell
+vamp get cluster mycluster
+```
 
-## Istio setup
+with kubectl you can check the namespaces of vamp-system and istio-system and logging is created.
+Vamp Kubist will run a job in vamp-system namespace to make sure that everything is properly installed and continue running this job until it is finished. Make sure that you have enough resources and there are no pending pods or pods in Crash Loop.
 
-Lamia will automatically check for Istio on each cluster it is connected to.
-Lamia expects to find the following resources inside the istio-system namesapce:
+If you have the watch command installed, we recommended running it to see installation process in action. You can do so with
+
+```shell
+watch kubectl get pods --all-namespaces
+```
+
+You can also use kubectl to check whether there are pending pods, which is a common issue when there are not enough resources:
+
+```shell
+kubectl get pods --all-namespaces | grep Pending
+```
+
+If there are pending pods after some a few minutes, it is recommended to diagnose the issue, and if it is a resource issue, scale up the cluster.
+While working on the same cluster it is recommended to set it as default by:
+
+```shell
+vamp config set -c cluster1
+```
+
+### Istio setup
+
+As we said, when bootstrapping a cluster, a job will run inside the vamp-system namespace to install istio.
+This job is triggered if Vamp Kubist finds that any of these resources, making up the default istio installation, is missing on the cluster inside the istio-system namespace.
 
 **Deployments:**
 
@@ -324,7 +349,8 @@ Lamia expects to find the following resources inside the istio-system namesapce:
 - istio-statsd-prom-bridge                
 - prometheus                              
 
-and the following int he logging namespace
+Besides these resources there are also some others that are required to handle metrics.
+These are located inside the logging namespace.
 
 **Deployments:**
 
@@ -344,6 +370,95 @@ and the following int he logging namespace
 - fluentd-es-config
 - mapping-config
 
-If any of these resources are missing, Lamia will try to install Istio.
+If any of these resources are missing, Vamp Kubist will try to install Istio.
 
 **Keep in mind that if you have pre-existing deployments, then, after the installation is complete, you will need to restart them or trigger a rolling update in order for the Istio Sidecar to be injected.**
+
+
+## Creating namespaces and deployments
+
+Now that we have Vamp Kubist running in a cluster and managing both its own cluster and another one we can think about creating a namespace and some deployments within it.
+Vamp Kubist currently doesn't manage the creation of namespaces and deployments, but simply detects and import them.
+To showcase that we will use kubectl to create a few sample deployments.
+You can do so by running
+
+```shell
+kubectl apply -f https://github.com/magneticio/vampkubistdocs/samples/namespace-setup.yaml
+```
+
+This will create a namespace named kubist-demo and two deployments named deployment1 and deployment2.
+We can now tell Vamp Kubist to import the kubist-demo namespace by running the command
+
+```shell
+vamp create virtual_cluster kubist-demo --init
+```
+
+This will prompt Vamp Kubist to add the following labels to the kubist-demo namespace on kubernetes:
+
+```yaml
+vamp-managed: enabled
+istio-injection: enabled
+```
+
+The vamp-managed flag tells Vamp Kubist to import the namespace and its content by creating a new virtual cluster with the same name.
+A virtual cluster is nothing more than a wrapper of a kubernetes namespace and it is used by Vamp Kubist to keep track of its content and, optionally, to associate some metadata with it.
+In our example we have no need for such metadata, hence why we are specifyin the --init flag instead of provding a yaml file reference with -f.
+On the other hand, the istio-injection flag enables istio sidecar automatic injection in the pods inside the virtual cluster.
+Mind the fact that, since we are importing a virtual cluster with pre-existing deployments, those deployments will need to be restarted in order fot he pod to be injected.
+Vamp Kubist will take care of that without the need for the user to do anything.
+You can now list the virtualclusters to verify that everything is in order.
+
+```shell
+vamp list virtual_clusters
+```
+
+The output of this command should be a single element list like the one below.
+
+```shell
+- kubist-demo```
+```
+
+Now set the kubist-demo virtual cluster as the default one.
+
+```shell
+vamp config set -r kubist-demo
+```
+
+The deployments inside this virtual-cluster share a common label app: demo-app. This tells Vamp Kubist that all these deployments are actually different versions of the same aplicaiton.
+Hence Vamp Kubist will import them grouped in a single application entity.
+You can see it by running 
+
+```shell
+vamp list applications
+```
+
+which will return a single result list containing the demo-app applicaiton.
+If you now get the details of this application by running
+
+```shell
+vamp get application demo-app
+```
+
+you will be presented with the following:
+
+```yaml
+clusterName: cluster1
+name: application
+projectName: default
+specification:
+  metadata: {}
+  policies: []
+status:
+  deployments:
+  - deployment1
+  - deployment2
+virtualClusterName: kubist-demo
+```shell
+
+
+as you can see inside the application status there'a s list of the deployments belonging to this application.
+You can now get a deployment specification by runnin.
+
+```shell
+vamp get deployment deployment1 -a demo-app
+```
