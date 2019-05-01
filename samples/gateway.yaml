@@ -2,4 +2,4 @@ servers:
   - port: 80
     protocol: http
     hosts:
-      - vamp-gw1.democluster.net
+      - kubist-demo.democluster.net

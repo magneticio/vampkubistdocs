@@ -15,5 +15,5 @@ Most of them overlap completely with Kubernetes or Istio entities, but some don'
 - **Canary Release**: an automated process managing several resources in order to perform canary releasing on a specific Vamp Service.
 - **Experiment**: an automated process managing several resources in order to perform A/B testing on a specific Vamp Service.
 - **Policy Executor**: an automated process assocaited to a single entity that periodically runs to perform different action, including running polciies (see below). Can be overridden through the API.
-- **Policy**: a process that can be triggered by the policy executor of an entity it allows to implement complex behaviour like canary releasing and experiments. For more details refer to the [Performing a canary release](BASIC_TUTORIAL.md#performing-a-canary-release) section. 
+- **Policy**: a process that can be triggered by the policy executor of an entity it allows to implement complex behaviour like canary releasing and experiments. For more details refer to the [Performing a canary release](CANARY_RELEASE.md#performing-a-canary-release) section. 
 

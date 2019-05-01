@@ -11,6 +11,6 @@ To learn more about Vamp Kubist and what it can achieve you can check the follow
 * [Installation guidelines](INSTALLATION.md)
 * [Cluster setup](SETUP.md)
 * [Terminology](TERMINOLOGY.md)
-* [Basic tutorial](BASIC_TUTORIAL.md)
+* [Basic tutorial](CANARY_RELEASE.md)
 * [Advanced tutorial](ADVANCED_TUTORIAL.md)
 * [API references](API.md)
