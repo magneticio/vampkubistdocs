@@ -1,7 +1,0 @@
-ports:
-  - name: http
-    port: 9090
-    targetPort: 9090
-    protocol: TCP
-selectors:
-  deploymnet: deployment1

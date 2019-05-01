@@ -1,5 +1,0 @@
-service: svc2
-subsets:
-  - name: subset1
-    labels:
-      deployment: deployment1

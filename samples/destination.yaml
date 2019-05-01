@@ -1,8 +1,8 @@
-application: app1
+application: demo-app
 ports:
   - name: http
-    port: 9090
-    targetPort: 9090
+    port: 9191
+    targetPort: 9191
     protocol: TCP
 subsets:
   subset1:
