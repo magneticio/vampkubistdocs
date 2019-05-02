@@ -1,0 +1,33 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: demo-app
+  name: deployment3
+  namespace: kubist-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-app
+      deployment: deployment3
+  template:
+    metadata:
+      labels:
+        app: demo-app
+        deployment: deployment3
+    spec:
+      containers:
+      - env:
+        - name: SHOP_VERSION
+          value: "1"
+        - name: GET_FEEDBACK
+          value: "no"
+        - name: VAMP_ELASTICSEARCH_URL
+          value: "http://es-service:9200"
+        image: magneticio/simpleservice:2.0.2
+        imagePullPolicy: IfNotPresent
+        name: deployment1-0
+        ports:
+        - containerPort: 9191
+          protocol: TCP

@@ -225,14 +225,18 @@ This will prompt Vamp Kubist to add the following labels to the kubist-demo name
 ```yaml
 vamp-managed: enabled
 istio-injection: enabled
+cluster: cluster1
+project: project1
 ```
 
 The vamp-managed flag tells Vamp Kubist to import the namespace and its content by creating a new virtual cluster with the same name.
 A virtual cluster is nothing more than a wrapper of a kubernetes namespace and it is used by Vamp Kubist to keep track of its content and, optionally, to associate some metadata with it.
-In our example we have no need for such metadata, hence why we are specifyin the --init flag instead of provding a yaml file reference with -f.
+In our example we have no need for such metadata, hence why we are specifying the --init flag instead of provding a yaml file reference with -f.
 On the other hand, the istio-injection flag enables istio sidecar automatic injection in the pods inside the virtual cluster.
 Mind the fact that, since we are importing a virtual cluster with pre-existing deployments, those deployments will need to be restarted in order fot he pod to be injected.
 Vamp Kubist will take care of that without the need for the user to do anything.
+Lastly the project and cluster label identify this namespace as belonging to those specific project and cluster, thus preventing other projects, running on the same cluster, to perform any action on them.
+
 You can now list the virtualclusters to verify that everything is in order.
 
 ```shell
@@ -290,4 +294,4 @@ vamp get deployment deployment1 -a demo-app
 ```
 
 At this point you have a set of deployments grouped into an application inside a virtual cluster. 
-But what can you do with all that you set up? To delve into taht you can take a look at..
+But what can you do with all that you set up? To delve into that you can take a look at the [basic tutorial section](BASIC_TUTORIAL.md)

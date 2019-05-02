@@ -241,3 +241,31 @@ If everything works correctly this is the page you should be seeing.
 ![](images/screen3.png)
 
 Since we set the weights to 50/50 you should be able to see alternating colouring for the background by hitting refresh repeatedly, thus proving that you are actually landing on different versions.
+You can now edit this configuration by changing the weights like shown below
+
+```yaml
+gateways:
+  - gw-1
+hosts:
+  - kubist-demo.democluster.net
+routes:
+  - protocol: http
+    weights:
+      - destination: dest-1
+        port: 9191
+        version: subset1
+        weight: 100
+      - destination: dest-1
+        port: 9191
+        version: subset2
+        weight: 0
+exposeInternally: true
+```
+
+and running
+
+```shell
+vamp update vampservice vs1 -f ./yourvampservice.yaml
+```
+
+After the command successfully executed you will be able to access only the deployment version corresponding to subset1.

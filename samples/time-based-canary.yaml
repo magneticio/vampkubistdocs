@@ -1,4 +1,6 @@
 vampService: vs-1
 destination: dest-1
+port: 9191
+subset: subset3
 updatePeriod: 30000
 updateStep: 10
