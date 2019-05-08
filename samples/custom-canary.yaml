@@ -1,0 +1,7 @@
+vampService: vs-8
+updatePeriod: 30000
+updateStep: 10
+policies:
+  - name: CustomCanaryReleasePolicy
+    parameters:
+      metric: if ( ( metric "dest-2" 9090 "subset1" "internal_upstream_rq_2xx" / metric "dest-2" 9090 "subset1" "upstream_rq_total" ) > ( metric "dest-2" 9090 "subset2" "internal_upstream_rq_2xx" / metric "dest-2" 9090 "subset2" "upstream_rq_total" ) ) { result = "dest-2 9090 subset1"; } else if ( ( metric "dest-2" 9090 "subset1" "internal_upstream_rq_2xx" / metric "dest-2" 9090 "subset1" "upstream_rq_total" ) < ( metric "dest-2" 9090 "subset2" "internal_upstream_rq_2xx" / metric "dest-2" 9090 "subset2" "upstream_rq_total" ) ) { result = "dest-2 9090 subset2"; } else { result = nil; } result

@@ -1,0 +1,93 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: demo-app2
+  name: deployment4
+  namespace: kubist-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-app2
+      deployment: deployment4
+  template:
+    metadata:
+      labels:
+        app: demo-app2
+        deployment: deployment4
+    spec:
+      containers:
+      - env:
+        - name: SERVICE_NAME
+          value: deployment4
+        image: magneticio/nodewebservice:2.0.11
+        livenessProbe:
+          failureThreshold: 5
+          httpGet:
+            path: /health
+            port: 9090
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 20
+        name: deployment4-0
+        ports:
+        - containerPort: 9090
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /ready
+            port: 9090
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 20
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: demo-app2
+  name: deployment5
+  namespace: kubist-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-app2
+      deployment: deployment5
+  template:
+    metadata:
+      labels:
+        app: demo-app2
+        deployment: deployment5
+    spec:
+      containers:
+      - env:
+        - name: SERVICE_NAME
+          value: deployment5
+        image: magneticio/nodewebservice:2.0.11
+        livenessProbe:
+          failureThreshold: 5
+          httpGet:
+            path: /health
+            port: 9090
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 20
+        name: deployment5-0
+        ports:
+        - containerPort: 9090
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /ready
+            port: 9090
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 20

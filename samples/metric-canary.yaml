@@ -1,0 +1,7 @@
+vampService: vs-8
+updatePeriod: 30000
+updateStep: 10
+policies:
+  - name: MetricCanaryReleasePolicy
+    parameters:
+      metric: internal_upstream_rq_2xx / upstream_rq_total

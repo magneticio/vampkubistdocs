@@ -8,9 +8,9 @@ routes:
       - destination: dest-1
         port: 9191
         version: subset1
-        weight: 50
+        weight: 100
       - destination: dest-1
         port: 9191
         version: subset2
-        weight: 50
+        weight: 0
 exposeInternally: true

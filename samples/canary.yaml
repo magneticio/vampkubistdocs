@@ -1,6 +1,6 @@
-vampService: vamp-service-1
-destination: dest-1
-port: 9090
-subset: subset3
+vampService: vs-2
+destination: dest-2
 updatePeriod: 30000
 updateStep: 10
+policies:
+  - name: TimedCanaryReleasePolicy
