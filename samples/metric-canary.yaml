@@ -1,4 +1,4 @@
-vampService: vs-8
+vampService: vs-1
 updatePeriod: 30000
 updateStep: 10
 policies:

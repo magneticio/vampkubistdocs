@@ -30,7 +30,7 @@ spec:
           value: "no"
         - name: VAMP_ELASTICSEARCH_URL
           value: "http://es-service:9200"
-        image: magneticio/simpleservice:2.0.2
+        image: magneticio/simpleservice:2.0.12
         imagePullPolicy: IfNotPresent
         name: deployment1-0
         ports:
@@ -64,9 +64,10 @@ spec:
           value: "no"
         - name: VAMP_ELASTICSEARCH_URL
           value: "http://es-service:9200"
-        image: magneticio/simpleservice:2.0.2
+        image: magneticio/simpleservice:2.0.12
         imagePullPolicy: IfNotPresent
         name: deployment2-0
         ports:
         - containerPort: 9191
           protocol: TCP
+

@@ -9,7 +9,6 @@
 * Kubectl should be installed on the local computer with authorizations to access the cluster.
 * Curl should be installed locally.
 
-
 ## Installation steps
 
 To install the client on Mac or Linux, run the following command:

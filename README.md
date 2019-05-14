@@ -9,8 +9,13 @@ Kubist is a single Docker container that provides a REST API and React-based UI 
 To learn more about Vamp Kubist and what it can achieve you can check the following resources:
 
 * [Installation guidelines](INSTALLATION.md)
-* [Cluster setup](SETUP.md)
 * [Terminology](TERMINOLOGY.md)
-* [Basic tutorial](CANARY_RELEASE.md)
+* [Cluster setup](SETUP.md)
+* [Users management](USER_MANAGEMENT.md)
+* [NOTIFICATIONS](NOTIFICATIONS.md)
+* [Basic tutorial](BASIC_TUTORIAL.md)
+* [Canary releasing](CANARY_RELEASE.md)
+* [A/B testing with experiments](EXPERIMENTS.md)
 * [Advanced tutorial](ADVANCED_TUTORIAL.md)
+* [Executors and policies](EXECUTORS_AND_POLICIES.md)
 * [API references](API.md)

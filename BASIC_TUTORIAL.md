@@ -41,14 +41,11 @@ subsets:
   subset2:
     labels:
       deployment: deployment2
-  subset3:
-    labels:
-      deployment: deployment3
 ```
 
 As you can see we are referencing application kubist-demo to tell Vamp Kubist that that is the target of this destination.
 Then we are defining which ports we want to be available, in this case we are interested only in port 9191.
-Lastly we define 3 subsets, one for each deployment, using the deployment label to identify them. 
+Lastly we define 2 subsets, one for each deployment, using the deployment label to identify them. 
 If you don't have a deployment label you can use any other one or a combination of different labels.
 The purpose of subsets is basically to identify different versions of the deploymnet in order to be able, at a later stage, to route traffic to them.
 You can now verify that the destination has been created by running 
@@ -90,28 +87,13 @@ AT this point you need to tell Vamp Kubist to use Google Cloud DNS. You can do t
 - google_project_id: which is of course you gooel project id
 - google_service_account: which is the service account key in json format. You can easily obtain it by following [this](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) guide.
 
-To do that mind the fact that you have to first get the specification with
+To update the cluster definition you can run
 
 ```shell
-vamp get cluster cluster1
+vamp edit cluster cluster1
 ```
 
-which will yield a response like this
-
-```shell
-name: cluster1
-projectName: project1
-specification:
-  metadata:
-    cacertdata: somecert
-    serviceaccount_token: someserviceaccount
-    url: https://0.0.0.1
-  policies: []
-status:
-  metadata: {}
-```
-
-And then modify it in order to not override the cacertdata, serviceaccount_token and url fields, which are needed to connect to the cluster.
+And edit the specification by adding the two new parameters.
 The new specification yaml for the cluster should then look like this:
 
 ```yaml

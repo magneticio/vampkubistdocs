@@ -11,6 +11,3 @@ subsets:
   subset2:
     labels:
       deployment: deployment2
-  subset3:
-    labels:
-      deployment: deployment3

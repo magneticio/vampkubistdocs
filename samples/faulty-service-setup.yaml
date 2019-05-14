@@ -2,47 +2,34 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    app: demo-app2
-  name: deployment5
+    app: demo-app
+  name: deployment2
   namespace: kubist-demo
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: demo-app2
-      deployment: deployment5
+      app: demo-app
+      deployment: deployment2
   template:
     metadata:
       labels:
-        app: demo-app2
-        deployment: deployment5
+        app: demo-app
+        deployment: deployment2
     spec:
       containers:
       - env:
-        - name: SERVICE_NAME
-          value: deployment5
+        - name: SHOP_VERSION
+          value: "3"
+        - name: GET_FEEDBACK
+          value: "no"
+        - name: VAMP_ELASTICSEARCH_URL
+          value: "http://es-service:9200"
         - name: FAILURE
           value: "0.5"
-        image: magneticio/nodewebservice:2.0.11
-        livenessProbe:
-          failureThreshold: 5
-          httpGet:
-            path: /health
-            port: 9090
-            scheme: HTTP
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 20
-        name: deployment5-0
+        image: magneticio/simpleservice:2.0.12
+        imagePullPolicy: IfNotPresent
+        name: deployment2-0
         ports:
-        - containerPort: 9090
+        - containerPort: 9191
           protocol: TCP
-        readinessProbe:
-          failureThreshold: 3
-          httpGet:
-            path: /ready
-            port: 9090
-            scheme: HTTP
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 20

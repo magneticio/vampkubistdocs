@@ -14,3 +14,6 @@ destinations:
     port: 9090
     subset: subset2
     target: /endpoint1
+metadata:
+  complexmetricsdriver: custom
+dataSourcePath: http://kubist-datasource.kubist-demo.svc.cluster.local:9090/stats

@@ -1,5 +1,5 @@
-vampService: vs-2
-destination: dest-2
+vampService: vs-1
+destination: dest-1
 updatePeriod: 30000
 updateStep: 10
 policies:

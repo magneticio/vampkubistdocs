@@ -7,76 +7,11 @@ We will do that by setting up a canary release over two different versions of th
 
 In order to perform a canary release you need to have an application with at least two deployments installed in the cluster.
 On top of that you will also need a destination, defining at least two subsets, a vamp service, directing the traffic to one of the subsets, and a gateway, to expose the service.
-To quickly get such a setup, you can follow the following setting up section.
-
-### Setting up the environment
-
-In order to test canary releases we need to first deploy an application with two deployments.
-To do that we will first apply the following script
-
-```shell
-kubectl apply -f https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/example-app-setup.yaml
-```
-
-this will create two deployments deployment4 and deployment5 grouped in applicaiton demo-app2 inside virtual cluster kubist-demo.
-Now create a destination, gateway and vamp service using the three samples below, but taking care to replace the hostname being used with one of your own.
-
-**Destination dest-2:**
-
-```yaml
-application: demo-app2
-ports:
-  - name: http
-    port: 9090
-    targetPort: 9090
-    protocol: TCP
-subsets:
-  subset1:
-    labels:
-      deployment: deployment4
-  subset2:
-    labels:
-      deployment: deployment5
-```
-
-**Gateway gw-2:**
-
-```yaml
-servers:
-  - port: 80
-    protocol: http
-    hosts:
-      - kubist-demo2.democluster.net
-```
-
-**Vamp Service vs-2:**
-
-```yaml
-gateways:
-  - gw-2
-hosts:
-  - kubist-demo2.democluster.net
-routes:
-  - protocol: http
-    weights:
-      - destination: dest-2
-        port: 9090
-        version: subset1
-        weight: 100
-      - destination: dest-2
-        port: 9090
-        version: subset2
-        weight: 0
-exposeInternally: true
-```
-
-You can verify that everything has been set up correctly by accessing the specified host. 
-You will get a message telling you which version you are reaching and, if the vamp service is set up properly, upon refreshing the page you should land on the other version.
-Mind the fact that these examples are designed to run alongside the application set up in the [basic tutorial section](BASIC_TUTORIAL.md), so you need not worry about cleaning up the cluster if you followed that part of the tutorial first.
+To quickly get such an environment, you can follow the [setup section](SETUP.md).
 
 ## Canary release types
 
-Vamp Kubist offers the ability to setting up different types of canary releases through the use of [policies](POLICIES_AND_EXECUTORS.md).
+Vamp Kubist offers the ability to setting up different types of canary releases through the use of [policies](EXECUTORS_AND_POLICIES.md).
 Currently four types of canary release are available.
 - **Time based canary release**
 - **Health based canary release**
@@ -89,23 +24,30 @@ In this section we will explain and test each one of them
 
 The time based canary release is the simplest form of canary release, in which the only variable that matters is time. 
 Simply put, the weights will shift from the current configuration to desired target over time, increasing by the specificied step at each interval.
-You can set up the canary release by running
+Let's first move all the wight in the vamp service to subset1.
+You can do this by editing the vamp service and setting the weight for subset1 to 100 and the weight for subset2 to 0.
 
 ```shell
-vamp create canaryrelease vs-2 -f https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/canary.yaml
+vamp edit vampservice vs-1
+```
+
+You can now set up the canary release by running
+
+```shell
+vamp create canaryrelease vs-1 -f https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/canary.yaml
 ```
 
 or more simply
 
 ```shell
-vamp release vs-2 --destination dest-2 --type time
+vamp release vs-1 --destination dest-1 --type time
 ```
 
-This will create a time based canary release entity with target dest-2 that will shift weights from subset1 to subset2 over time with increments of 10% every 30 seconds.
+This will create a time based canary release entity with target dest-1 that will shift weights from subset1 to subset2 over time with increments of 10% every 30 seconds.
 To verify that everything has been set up completely you can run
 
 ```shell
-vamp get canaryrelease vs-2
+vamp get canaryrelease vs-1
 ```
 
 which will return a response like the following
@@ -114,22 +56,22 @@ which will return a response like the following
 name: vs-1-dest-1
 projectName: project1
 specification:
-  destination: dest-2
+  destination: dest-1
   metadata: {}
   policies: []
   subsetLabels: {}
   updatePeriod: 30000
   updateStep: 10
-  vampService: vs-2
+  vampService: vs-1
 status:
   currentSpecification:
-    destination: dest-2
+    destination: dest-1
     metadata: {}
     policies: []
     subsetLabels: {}
     updatePeriod: 30000
     updateStep: 10
-    vampService: vs-2
+    vampService: vs-1
   isCanaryReleaseOver: false
   isDestinationSetUp: true
   isVampServiceSetUp: true
@@ -145,7 +87,7 @@ In the status section uou can see tree flags that give you some insight ont he c
 You can now periodically run 
 
 ```shell
-vamp get vampservice vs-2
+vamp get vampservice vs-1
 ```
 
 to check progress on the canary release. 
@@ -154,21 +96,21 @@ If you had more than two subsets available, i.e. if your configuration were like
 
 ```yaml
 gateways:
-- gw-2
+- gw-1
 hosts:
-  - kubist-demo2.democluster.net
+  - kubist-demo.democluster.net
 routes:
   - protocol: http
   weights:
-    - destination: dest-2
+    - destination: dest-1
      port: 9090
      version: subset1
      weight: 100
-    - destination: dest-2
+    - destination: dest-1
      port: 9090
      version: subset2
      weight: 0
-    - destination: dest-2
+    - destination: dest-1
      port: 9090
      version: subset3
      weight: 0     
@@ -186,9 +128,9 @@ Now if if you wanted to have a canary release again to move to subset3 you would
 However there's an easier way to achieve the same result, that is by running
 
 ```shell
-vamp delete canaryrelease vs-2
+vamp delete canaryrelease vs-1
 
-vamp release vs-2 --destination dest-2 --port 9090 --subset subset3 -l deployment=deployment3
+vamp release vs-1 --destination dest-1 --port 9191 --subset subset3 -l deployment=deployment3
 ```
 
 By doing that, not only the canary release will be created with the new target subset3, but also the destination will be update to include subset3 identified by the label deployment: deployment3 as specified by the -l flag.
@@ -202,7 +144,7 @@ Health based canary releasing is very similar to the time based approach but it 
 Before proceeding reset the initial state of the demo-app2 application by running
 
 ```shell
-vamp delete canaryrelease vs-2
+vamp delete canaryrelease vs-1
 
 kubectl delete deploy deployment3 -n=kubist-demo
 ```
@@ -211,19 +153,19 @@ And updating the vamp service to to its original configuration.
 Now, to create a health based canary release run
 
 ```shell
-vamp release vs-2  --destination dest-2 --type health
+vamp release vs-1  --destination dest-1 --type health
 ```
 
 or you can also run 
 
 ```shell
-vamp release vs-2  --destination dest-2
+vamp release vs-1 --destination dest-1
 ```
 
 Since health is the default type.
-The canary release will start to gradually shift traffic towards dest-2.
-Youw ould now want to test if the health of the subset is being checked. 
-To do that, you can execute the following command, which will configure deployment5 to return errors on 50% of the requests.
+The canary release will start to gradually shift traffic towards dest-1.
+You could now want to test if the health of the subset is being checked. 
+To do that, you can execute the following command, which will configure deployment2 to return errors on 50% of the requests.
 
 ```shell
 kubectl apply -f https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/faulty-service-setup.yaml
@@ -234,7 +176,7 @@ Thus, in order to test this, you will have to generate some traffic towards the 
 You can do that either manually or by running the following command:
 
 ```shell
-docker run -it -e URL_LANDING_PAGE=http://kubist-demo2.democluster.net -e NUMBER_OF_AGENTS=10 magneticio/experiment-tester:0.0.3-valce-SNAPSHOT
+docker run -it -e URL_LANDING_PAGE=http://kubist-demo.democluster.net -e NUMBER_OF_AGENTS=10 magneticio/experiment-tester:0.0.3
 ```
 
 This will start a docker container that will continuously generate traffic towards the specified host, allowing you to see the canary release in action.
@@ -253,7 +195,7 @@ To apply this canary release configuration you can rely on the resources created
 After removing the previous canary release and restoring the vamp service and deployments to their original statuses, you can apply the metric based canary releas by running
 
 ```shell
-vamp create canaryrelease vs-2 -f https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/metric-canary.yaml
+vamp create canaryrelease vs-1 -f https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/metric-canary.yaml
 ```
 
 As you can see, this time we are not using the inline notation, but we are instead specifying a yaml file that contains the canary release definition.
@@ -261,7 +203,7 @@ The reason for doing that is that we need to provide the metric parameter, which
 Below you can see the specification of the canary release that we just set up in Vamp Kubist
 
 ```yaml
-vampService: vs-8
+vampService: vs-1
 updatePeriod: 30000
 updateStep: 10
 policies:
@@ -299,38 +241,38 @@ In this example we will again reproduce the previous example, but this time usin
 To create such canary release you can run
 
 ```shell
-vamp create canaryrelease vs-2 -f https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/custom-canary.yaml
+vamp create canaryrelease vs-1 -f https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/custom-canary.yaml
 ```
 
 where the content of the ymal is
 
 ```yaml
-vampService: vs-8
+vampService: vs-1
 updatePeriod: 30000
 updateStep: 10
 policies:
   - name: CustomCanaryReleasePolicy
     parameters:
-      metric: if ( ( metric "dest-2" 9090 "subset1" "internal_upstream_rq_2xx" / metric "dest-2" 9090 "subset1" "upstream_rq_total" ) > ( metric "dest-2" 9090 "subset2" "internal_upstream_rq_2xx" / metric "dest-2" 9090 "subset2" "upstream_rq_total" ) ) { result = "dest-2 9090 subset1"; } else if ( ( metric "dest-2" 9090 "subset1" "internal_upstream_rq_2xx" / metric "dest-2" 9090 "subset1" "upstream_rq_total" ) < ( metric "dest-2" 9090 "subset2" "internal_upstream_rq_2xx" / metric "dest-2" 9090 "subset2" "upstream_rq_total" ) ) { result = "dest-2 9090 subset2"; } else { result = nil; } result
+      metric: if ( ( metric "dest-1" 9090 "subset1" "internal_upstream_rq_2xx" / metric "dest-1" 9090 "subset1" "upstream_rq_total" ) > ( metric "dest-1" 9090 "subset2" "internal_upstream_rq_2xx" / metric "dest-1" 9090 "subset2" "upstream_rq_total" ) ) { result = "dest-1 9090 subset1"; } else if ( ( metric "dest-1" 9090 "subset1" "internal_upstream_rq_2xx" / metric "dest-1" 9090 "subset1" "upstream_rq_total" ) < ( metric "dest-1" 9090 "subset2" "internal_upstream_rq_2xx" / metric "dest-1" 9090 "subset2" "upstream_rq_total" ) ) { result = "dest-1 9090 subset2"; } else { result = nil; } result
 ```
 
 As you can see we are specifying a CustomCanaryReleasePolicy with a metric parameter. 
 Below you can find the condition we are specifying in a more readable format.
 
 ```shell
-if ( ( metric "dest-2" 9090 "subset1" "internal_upstream_rq_2xx" / 
-       metric "dest-2" 9090 "subset1" "upstream_rq_total" ) 
+if ( ( metric "dest-1" 9090 "subset1" "internal_upstream_rq_2xx" / 
+       metric "dest-1" 9090 "subset1" "upstream_rq_total" ) 
        > 
-      ( metric "dest-2" 9090 "subset2" "internal_upstream_rq_2xx" / 
-        metric "dest-2" 9090 "subset2" "upstream_rq_total" ) ) { 
-        result = "dest-2 9090 subset1"; 
+      ( metric "dest-1" 9090 "subset2" "internal_upstream_rq_2xx" / 
+        metric "dest-1" 9090 "subset2" "upstream_rq_total" ) ) { 
+        result = "dest-1 9090 subset1"; 
       } 
 else if ( ( 
-      metric "dest-2" 9090 "subset1" "internal_upstream_rq_2xx" / 
-      metric "dest-2" 9090 "subset1" "upstream_rq_total" ) < 
-      ( metric "dest-2" 9090 "subset2" "internal_upstream_rq_2xx" / 
-      metric "dest-2" 9090 "subset2" "upstream_rq_total" ) ) { 
-      result = "dest-2 9090 subset2"; 
+      metric "dest-1" 9090 "subset1" "internal_upstream_rq_2xx" / 
+      metric "dest-1" 9090 "subset1" "upstream_rq_total" ) < 
+      ( metric "dest-1" 9090 "subset2" "internal_upstream_rq_2xx" / 
+      metric "dest-1" 9090 "subset2" "upstream_rq_total" ) ) { 
+      result = "dest-1 9090 subset2"; 
       } 
 else 
     { result = nil; } result
@@ -344,10 +286,10 @@ In this case a metric definition is given by
 metric destination-name port subset-name metric-name
 ```
 
-so for example if we want to get the number of 200 responses for destination dest-2, port 9090 and subset subset1, the metric definition will be
+so for example if we want to get the number of 200 responses for destination dest-1, port 9090 and subset subset1, the metric definition will be
 
 ```shell
-metric "dest-2" 9090 "subset1" "internal_upstream_rq_2xx"
+metric "dest-1" 9090 "subset1" "internal_upstream_rq_2xx"
 ```
 
 Now, by looking at this condition we can understand that it is simply telling Vamp Kubist to shift the weights towards the version that has the highest ratio of 200 over the toatl number of requests.
