@@ -1,0 +1,43 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: datasource-app
+  name: datasource
+  namespace: kubist-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: datasource-app
+      deployment: datasource
+  template:
+    metadata:
+      labels:
+        app: datasource-app
+        deployment: datasource
+    spec:
+      containers:
+      - image: magneticio/experiment-datasource:0.0.5
+        livenessProbe:
+          failureThreshold: 5
+          httpGet:
+            path: /health
+            port: 9090
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 20
+        name: datasource-0
+        ports:
+        - containerPort: 9090
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /ready
+            port: 9090
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 20

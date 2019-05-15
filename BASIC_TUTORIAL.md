@@ -184,11 +184,11 @@ routes:
       - destination: dest-1
         port: 9191
         version: subset1
-        weight: 50
+        weight: 100
       - destination: dest-1
         port: 9191
         version: subset2
-        weight: 50
+        weight: 0
 exposeInternally: true
 ```
 
@@ -201,7 +201,7 @@ Let's go through all the fields of the specification one by one:
         - destination: the destination name. In our case that would be dest-1.
         - port: the optional destination port. Looking at our destination definition it is easy to understant this should be 9191, but we can also leave it empty since that is the only port we defined.
         - version: the optional target subset. In our case we will use subset1 and subset2 in order to split traffic between the two.
-        - weight: the actual weight, specifying the percentage of requests that will be directed towards each destination (meaning combinaiton of destination, port and subset). In our case since we want to split traffic equally we will specify 50. Mind the fact that the sum of weights in a single route should always be 100.
+        - weight: the actual weight, specifying the percentage of requests that will be directed towards each destination (meaning combinaiton of destination, port and subset). In our case since we want only subset1 to be available we specified a weight of 100 for it and 0 for subset2. Mind the fact that the sum of weights in a single route should always be 100.
 - exposeInternally: a flag that tells Vamp Kubist to expose the vamp service internally. When this lag is selected an extra kubernetes service will be created in order to expose the vamp service with its fully qualified name, that is vs1.kubist-demo.svc.cluster.local.
 
 You can verify that the vamp service has been create with kubectl by running
@@ -222,4 +222,11 @@ If everything works correctly this is the page you should be seeing.
 
 ![](images/screen3.png)
 
-Since we set the weights to 50/50 you should be able to see alternating colouring for the background by hitting refresh repeatedly, thus proving that you are actually landing on different versions.
+By running 
+
+```shell
+vamp edit vampservice vs-1 
+```          
+
+you can change the weights any way you like, as long as the total sum is 100.
+If, for example, you were to set the weights to 50/50 you would be able to see alternating colouring for the background by hitting refresh repeatedly, thus proving that you are actually landing on different versions.
