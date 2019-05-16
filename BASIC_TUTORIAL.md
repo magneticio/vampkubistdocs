@@ -61,8 +61,8 @@ vamp get service dest1 -n=kubist-demo -o yaml
 kubectl get destinationrule dest1 -n=kubist-demo -o yaml
 ```
 
-As youc an see a service and destinationrule have been created using the values defined in the destination yaml.
-More specifically the port has been used to set up the service, while the subsets have been used to create the destinationrule specificaiton.
+As you can see a service and destinationrule have been created using the values defined in the destination yaml.
+More specifically the port has been used to set up the service, while the subsets have been used to create the destinationrule specification.
 
 ## Gateway creation
 
@@ -70,7 +70,7 @@ Let's now create a gateway to allow for our service to be exposed outside the cl
 A Vamp Kubist gateway is a wrapper around a Istio gateway. 
 Differently from Istio, however, upon creating a gateway, Vamp Kubist will also set up a load balancer service so as to allow you to quickly create multiple gateways instead of having to rely on a single one.
 Vamp Kubist integrates with Let’s Encrypt in order to allow for getting SSL/TLS certificates.
-The integration with Let's Encrypt is based on DNS so, before proceedingimg1.png you should make sure that you have access to Google Cloud DNS.
+The integration with Let's Encrypt is based on DNS so, before proceeding you should make sure that you have access to Google Cloud DNS.
 After you made sure of that, the first step is the Zone domain creation, which is needed for name server redirection. 
 Some name service providers have fixed name servers but Google Cloud DNS creates a set of 4 name servers per zone. You need to set these name servers as your name servers in your domain provider’s settings. This is a one time operation per domain.
 For our tests we registered a domain democluster.net at [name.com](https://www.name.com/). This is an example name server configuration in name.com
@@ -84,7 +84,7 @@ Note that Google DNS has multiple sets of nameservers so when a zone is created 
 
 When a gateway is created, Vamp Kubist will set up the zone record for you and subsequently list the name servers in the UI. Let’s Encrypt authentication requires the name servers to be updated.
 AT this point you need to tell Vamp Kubist to use Google Cloud DNS. You can do that by updating the cluster1 specification with two extra metadata fields: 
-- google_project_id: which is of course you gooel project id
+- google_project_id: which is of course you google project id
 - google_service_account: which is the service account key in json format. You can easily obtain it by following [this](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) guide.
 
 To update the cluster definition you can run
@@ -124,7 +124,7 @@ vamp update cluster cluster1 -f yourfile.yaml
 ```
 
 Alternatively, if you don't want to go through the trouble of manually editing the specification, you can specify the same values in the metadata of the enclosing project or on the virtual cluster itself.
-Once that is done you can check that the update was successfult by getting the cluster speficication with 
+Once that is done you can check that the update was successfull by getting the cluster specification with 
  
 ```shell
 vamp get cluster cluster1
@@ -164,7 +164,7 @@ You should be able to find a deployment, a service and a horizontal pod autoscal
 Even though we successfully created a gateway we are still unable to reach the service. 
 To do that we need one final step, that is to create a vamp service in order to handle the routing of requests towards it.
 A vamp service is a wrapper around a istio virtual service. Just like its istio counterpart it allows for the specification of different weights and conditions for each of its route.
-A vamp servcie can potentially manage traffic coming from different gateways and directed towards different destinations, but for now we will limit ourselves to just one gateway and one destination.
+A vamp service can potentially manage traffic coming from different gateways and directed towards different destinations, but for now we will limit ourselves to just one gateway and one destination.
 To create the vamp service first download the [vamp service specification](https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/vampservice.yaml) and edit the hostname to whatever you specified for the gateway, then execute
 
 ```shell
@@ -199,10 +199,10 @@ Let's go through all the fields of the specification one by one:
     - protocol: the protocol for this route
     - weights: the list of destinations and corresponding weights. Each one is defined by:
         - destination: the destination name. In our case that would be dest-1.
-        - port: the optional destination port. Looking at our destination definition it is easy to understant this should be 9191, but we can also leave it empty since that is the only port we defined.
+        - port: the optional destination port. Looking at our destination definition it is easy to understand this should be 9191, but we can also leave it empty since that is the only port we defined.
         - version: the optional target subset. In our case we will use subset1 and subset2 in order to split traffic between the two.
-        - weight: the actual weight, specifying the percentage of requests that will be directed towards each destination (meaning combinaiton of destination, port and subset). In our case since we want only subset1 to be available we specified a weight of 100 for it and 0 for subset2. Mind the fact that the sum of weights in a single route should always be 100.
-- exposeInternally: a flag that tells Vamp Kubist to expose the vamp service internally. When this lag is selected an extra kubernetes service will be created in order to expose the vamp service with its fully qualified name, that is vs1.kubist-demo.svc.cluster.local.
+        - weight: the actual weight, specifying the percentage of requests that will be directed towards each destination (meaning combination of destination, port and subset). In our case since we want only subset1 to be available we specified a weight of 100 for it and 0 for subset2. Mind the fact that the sum of weights in a single route should always be 100.
+- exposeInternally: a flag that tells Vamp Kubist to expose the vamp service internally. When this flag is selected an extra kubernetes service will be created in order to expose the vamp service with its fully qualified name, that is vs1.kubist-demo.svc.cluster.local.
 
 You can verify that the vamp service has been create with kubectl by running
 
@@ -211,7 +211,7 @@ kubectl get virtualservice vs1 -n=kubist-demo
 ```          
 
 This will return the underlying virtual service.
-If you exposed the service internally you can also verify that the kubernetes service has been created bu running
+If you exposed the service internally you can also verify that the kubernetes service has been created by running
 
 ```shell
 kubectl get service vs1 -n=kubist-demo
