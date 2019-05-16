@@ -282,7 +282,7 @@ status:
 virtualClusterName: kubist-demo
 ```
 
-as you can see inside the application status there'a s list of the deployments belonging to this application.
+as you can see inside the application status there is a list of the deployments belonging to this application.
 You can now get a deployment specification by running.
 
 ```shell
