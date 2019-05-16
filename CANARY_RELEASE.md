@@ -24,7 +24,7 @@ In this section we will explain and test each one of them
 
 The time based canary release is the simplest form of canary release, in which the only variable that matters is time. 
 Simply put, the weights will shift from the current configuration to desired target over time, increasing by the specificied step at each interval.
-Let's first move all the wight in the vamp service to subset2.
+Let's first move all the weight in the vamp service to subset2.
 You can do this by editing the vamp service and setting the weight for subset1 to 100 and the weight for subset2 to 0.
 
 ```shell
@@ -79,10 +79,10 @@ virtualClusterName: kubist-demo
 ```
 
 As you can see destination has been set to dest-1, vampService is the target vamp service and all other fields are empty or have their default values.
-In the status section uou can see tree flags that give you some insight ont he current status of the canary release.
+In the status section you can see tree flags that give you some insight on the current status of the canary release.
 - isCanaryReleaseOver: a flag that is true if the target has been reached for this canary release and false otherwise.
-- isDestinationSetUp: a flag that is true if the destination referred to in the specificaiton is set up correctly.
-- isVampServiceSetUp: a flag that is true if the destination referred to in the specificaiton is set up correctly.
+- isDestinationSetUp: a flag that is true if the destination referred to in the specification is set up correctly.
+- isVampServiceSetUp: a flag that is true if the destination referred to in the specification is set up correctly.
 
 You can now periodically run 
 
@@ -118,7 +118,7 @@ exposeInternally: true
 ```
 
 Vamp Kubist would check the creation timestamps of deployments corresponding to subset2 and subset3 and move towards the most recently deployed one.
-let's now try adding a third deployment to demo-app2 by running
+Let's now try adding a third deployment to demo-app2 by running
 
 ```shell
 kubectl apply -f https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/third-deployment.yaml
@@ -149,7 +149,7 @@ vamp delete canaryrelease vs-1
 kubectl delete deploy deployment3 -n=kubist-demo
 ```
 
-And updating the vamp service to to its original configuration.
+And updating the vamp service to its original configuration.
 Now, to create a health based canary release run
 
 ```shell
@@ -188,7 +188,7 @@ If you were to update again the deployment to not return errors the canary relea
 
 ### Metric based canary release
 
-A metric based canary release is driven by a condition based on a single metric or an aggregation metrics.
+A metric based canary release is driven by a condition based on a single metric or an aggregation metric.
 In this example we will use a metric based canary release to reproduce the behaviour observed with the health based canary release.
 Since an aggregated metric can be rather complex it is not possible to pass it as an inline parameter, so, to create this new canary release you will have to send a yaml file with its definition.
 To apply this canary release configuration you can rely on the resources created in the previous example and run
@@ -198,8 +198,8 @@ After removing the previous canary release and restoring the deployments to thei
 vamp update vampservice vs-1 -f https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/vampservice2.yaml
 ```
 
-This is necessary because with thi kind of cnaary release youc annot specify a target, but reather the target is identified by the result in evaluating the related metrics. For this reason, both subsets must be initally reachable.
-Once this has been done, you can apply the metric based canary releas by running
+This is necessary because with this kind of canary release you cannot specify a target, but rather the target is identified by the result in evaluating the related metrics. For this reason, both subsets must be initally reachable.
+Once this has been done, you can apply the metric based canary release by running
 
 ```shell
 vamp create canaryrelease vs-1 -f https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/metric-canary.yaml
@@ -219,13 +219,13 @@ policies:
       metric: internal_upstream_rq_2xx / upstream_rq_total
 ```
 
-As you can see the specification now explicitly mentions the appropriated policy to be run and also contains the metric parameter with value 
+As you can see the specification now explicitly mentions the appropriate policy to be run and also contains the metric parameter with value 
 
 ```shell
 internal_upstream_rq_2xx / upstream_rq_total
 ```
 
-This aggreagted metric calculates the ratio of successful responses over the total number of requests.
+This aggregated metric calculates the ratio of successful responses over the total number of requests.
 Metrics names are loosely based on Prometheus metrics names stored by Envoy (they are usually the last part of the metric name).
 Some of the available metrics are:
 
@@ -245,7 +245,7 @@ To specify more complex conditions you will have to use a custom canary release.
 
 A custom canary release allows you to specify a rather complex condition to identify the target subset using one or more metrics.
 In this example we will again reproduce the previous example, but this time using a custom condition that achieves the same result.
-take care of resetting the initial status of the vamp service so that the weights are split evenly. As stated earlier you can do it by running
+Take care of resetting the initial status of the vamp service so that the weights are split evenly. As stated earlier you can do it by running
 
 ```shell
 vamp update vampservice vs-1 -f https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/vampservice2.yaml
@@ -257,7 +257,7 @@ Now, to create such a canary release, you can run
 vamp create canaryrelease vs-1 -f https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/custom-canary.yaml
 ```
 
-where the content of the ymal is
+where the content of the yaml is
 
 ```yaml
 vampService: vs-1
@@ -305,6 +305,6 @@ so for example if we want to get the number of 200 responses for destination des
 metric "dest-1" 9090 "subset1" "internal_upstream_rq_2xx"
 ```
 
-Now, by looking at this condition we can understand that it is simply telling Vamp Kubist to shift the weights towards the version that has the highest ratio of 200 over the toatl number of requests.
+Now, by looking at this condition we can understand that it is simply telling Vamp Kubist to shift the weights towards the version that has the highest ratio of 200 over the total number of requests.
 
 
