@@ -1,0 +1,12 @@
+gateways:
+  - gw-datasource
+hosts:
+  - kubist-demo-datasource.democluster.net
+routes:
+  - protocol: http
+    weights:
+      - destination: datasource-dest
+        port: 9090
+        version: subset1
+        weight: 100
+exposeInternally: true

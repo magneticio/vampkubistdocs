@@ -18,7 +18,12 @@ spec:
         deployment: datasource
     spec:
       containers:
-      - image: magneticio/experiment-datasource:0.0.5
+      - env:
+        - name: SUBSET1_NAME
+          value: dest-1-9191-subset1
+        - name: SUBSET2_NAME
+          value: dest-1-9191-subset2
+        image: magneticio/experiment-datasource:0.0.7
         livenessProbe:
           failureThreshold: 5
           httpGet:

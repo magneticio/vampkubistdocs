@@ -163,6 +163,29 @@ You can see below an example of such a json.
 ```
 
 In this sample the number of elements is the number of users that got to the landing page of the service we are testing, while the average and standard deviation are calculated over the number of successful interactions of each user, i.e. the interactions that reached the specified target.
+<<<<<<< HEAD
+To deploy our sample datasource run 
+
+```shell
+kubectl apply -f https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/data-source.yaml
+```
+
+After the command completes you will be able to see, by either using the client or kubectl, that a new deployment datasource has been created inside a new datasource-app application.
+Now you need to expose the data source to the outside world.
+The reason for this is that it should be reachable by Vamp Kubist, which, in the environment we created in the [setup section](SETUP.md), is running on the default cluster, while we are currently working on cluster1.
+As shown before, in order to achieve this, you will need to create a destination, gateway and vamp service.
+The following three files, provide the definition for such resources, you should just take care to replace the host name with a new one that you deem appropriate.
+
+```shell
+https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/data-source-destination.yaml
+
+https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/data-source-gateway.yaml
+
+https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/data-source-vampservice.yaml
+```
+
+Now you can use Vamp Kubist client to check that all resources have been set up correctly and also query the stats endpoint of the newly deployed service to verify that it is reachable.
+=======
 To deploy the mock data source run
 
 ```shell
@@ -188,16 +211,16 @@ destinations:
       - test1
     port: 9191
     subset: subset1
-    target: /endpoint1
+    target: /cart?variant_id=1
   - destination: dest-1
     tags:
-      - test1
+      - test2
     port: 9191
     subset: subset2
-    target: /endpoint1
+    target: /cart?variant_id=1
 metadata:
   complexmetricsdriver: custom
-dataSourcePath: http://datasource-dest.kubist-demo.svc.cluster.local:9191/stats
+dataSourcePath: http://kubist-demo-datasource.democluster.net/stats
 ```
 
 Compared to the configuration used in the previous example the notable differences are that in this case you will be specifying a data source path with value **http://kubist-datasource.kubist-demo.svc.cluster.local:9191/stats**, to tell Vamp Kubist to use the data source exposed by that service, and you will also add a new metadata with key **complexmetricsdriver** and value **custom** in order to have Vamp Kubist use the custom implementation of the metrics driver. 

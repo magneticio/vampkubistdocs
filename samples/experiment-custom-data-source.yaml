@@ -10,10 +10,10 @@ destinations:
     target: /cart?variant_id=1
   - destination: dest-1
     tags:
-      - test1
+      - test2
     port: 9191
     subset: subset2
     target: /cart?variant_id=1
 metadata:
   complexmetricsdriver: custom
-dataSourcePath: http://datasource-dest.kubist-demo.svc.cluster.local:9090/stats
+dataSourcePath: http://kubist-demo-datasource.democluster.net/stats
