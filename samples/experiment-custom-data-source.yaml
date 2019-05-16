@@ -17,4 +17,3 @@ destinations:
 metadata:
   complexmetricsdriver: custom
 dataSourcePath: http://kubist-demo-datasource.democluster.net/stats
-

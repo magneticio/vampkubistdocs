@@ -12,7 +12,7 @@ To learn more about Vamp Kubist and what it can achieve you can check the follow
 * [Terminology](TERMINOLOGY.md)
 * [Cluster setup](SETUP.md)
 * [Users management](USER_MANAGEMENT.md)
-* [NOTIFICATIONS](NOTIFICATIONS.md)
+* [Notifications](NOTIFICATIONS.md)
 * [Basic tutorial](BASIC_TUTORIAL.md)
 * [Canary releasing](CANARY_RELEASE.md)
 * [A/B testing with experiments](EXPERIMENTS.md)

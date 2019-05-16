@@ -7,72 +7,7 @@ This is achieved by setting up a specific policy that interacts with a target va
 
 In order to perform a experiment you need to have an application with at least two deployments installed in the cluster.
 On top of that you will also need a destination, defining at least two subsets, a vamp service, directing the traffic to one of the subsets, and a gateway, to expose the service.
-To quickly get such a setup, you can follow the following setting up section.
-
-### Setting up the environment
-
-In order to test canary releases we need to first deploy an application with two deployments.
-To do that we will first apply the following script
-
-```shell
-kubectl apply -f https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/example-app-setup.yaml
-```
-
-this will create two deployments deployment4 and deployment5 grouped in applicaiton demo-app2 inside virtual cluster kubist-demo.
-Now create a destination, gateway and vamp service using the three samples below, but taking care to replace the hostname being used with one of your own.
-
-**Destination dest-1:**
-
-```yaml
-application: demo-app
-ports:
-  - name: http
-    port: 9090
-    targetPort: 9090
-    protocol: TCP
-subsets:
-  subset1:
-    labels:
-      deployment: deployment4
-  subset2:
-    labels:
-      deployment: deployment5
-```
-
-**Gateway gw-1:**
-
-```yaml
-servers:
-  - port: 80
-    protocol: http
-    hosts:
-      - kubist-demo2.democluster.net
-```
-
-**Vamp Service vs-1:**
-
-```yaml
-gateways:
-  - gw-1
-hosts:
-  - kubist-demo2.democluster.net
-routes:
-  - protocol: http
-    weights:
-      - destination: dest-1
-        port: 9090
-        version: subset1
-        weight: 100
-      - destination: dest-1
-        port: 9090
-        version: subset2
-        weight: 0
-exposeInternally: true
-```
-
-You can verify that everything has been set up correctly by accessing the specified host. 
-You will get a message telling you which version you are reaching and, if the vamp service is set up properly, upon refreshing the page you should land on the other version.
-Mind the fact that these examples are designed to run alongside the application set up in the [basic tutorial section](BASIC_TUTORIAL.md), so you need not worry about cleaning up the cluster if you followed that part of the tutorial first.
+To quickly get such an environment, you can follow the [setup section](SETUP.md).
 
 ## Creating an Experiment
 
@@ -92,13 +27,13 @@ destinations:
   - destination: dest-1
     tags:
       - test1
-    port: 9090
+    port: 9191
     subset: subset1
     target: /endpoint1
   - destination: dest-1
     tags:
       - test2
-    port: 9090
+    port: 9191
     subset: subset2
     target: /endpoint1
 ```
@@ -128,53 +63,53 @@ gateways:
 - gw-1
 - mesh
 hosts:
-- kubist-demo14.democluster.net
+- kubist-demo.democluster.net
 - vs-1.kubist-demo.svc.cluster.local
 labels: {}
 metadata: {}
 policies: []
 routes:
-- condition: ' ( cookie "ex-1" exact "dest-1-9090-subset1" ) '
+- condition: ' ( cookie "ex-1" exact "dest-1-9191-subset1" ) '
   protocol: http
   weights:
   - destination: dest-1
-    port: 9090
+    port: 9191
     version: subset1
     weight: 100
-- condition: ' ( cookie "ex-1" exact "dest-1-9090-subset2" ) '
+- condition: ' ( cookie "ex-1" exact "dest-1-9191-subset2" ) '
   protocol: http
   weights:
   - destination: dest-1
-    port: 9090
+    port: 9191
     version: subset2
     weight: 100
 - protocol: http
   weights:
   - destination: ex-1
-    port: 9090
-    version: dest-1-9090-subset1
+    port: 9191
+    version: dest-1-9191-subset1
     weight: 50
   - destination: ex-1
-    port: 9090
-    version: dest-1-9090-subset2
+    port: 9191
+    version: dest-1-9191-subset2
     weight: 50
 virtualServiceStatuses:
 - destination: dest-1
-port: 9090
+port: 9191
 status: true
 subset: subset1
 - destination: dest-1
-port: 9090
+port: 9191
 status: true
 subset: subset2
 - destination: ex-1
-port: 9090
+port: 9191
 status: true
-subset: dest-1-9090-subset1
+subset: dest-1-9191-subset1
 - destination: ex-1
-port: 9090
+port: 9191
 status: true
-subset: dest-1-9090-subset2
+subset: dest-1-9191-subset2
 virtualClusterName: kubist-demo
 ```
 
@@ -185,13 +120,13 @@ Once this is done, the cookie server redirects the user back to the original url
 Thanks to our reliance on cookies, we are able to provide users with a consistent experience while continuing our test, meaning that subsequent requests coming from the same user in a short period of time will always go to the same version.
 Depending on the test results, the policy defined on the vamp service will then move more users to more successful version, i.e. versions with a better ratio of users that reached the target over total number of users that reached the landing page.
 This is of course achieved by changing the weights of the cookie servers routes according to the step value defined in the experiment configuration.
-To handle all of this the experiment created an extra destiantion ex-1 and two deployments ex-1-dest-1-9090-subset1 and ex-1-dest-1-9090-subset2 which are running the cookie servers for each cookie value.
+To handle all of this the experiment created an extra destiantion ex-1 and two deployments ex-1-dest-1-9191-subset1 and ex-1-dest-1-9191-subset2 which are running the cookie servers for each cookie value.
 
 You can test the experiment by using the tester docker image shown in the [canary release section](CANARY_RELEASE.md).
 To do that execute
 
 ```shell
-docker run -it -e EXPERIMENT_NAME="ex-1" -e EXPERIMENT_BIAS=0.7 -e EXPERIMENT_BIASED_COOKIE="ex-1=subset1" -e EXPERIMENT_COOKIE="ex-1" -e URL_LANDING_PAGE=http://$HOST -e URL_TARGET_PAGE=http://$HOST/cart?variant_id=1 -e NUMBER_OF_AGENTS=100 magneticio/experiment-tester:0.0.3
+docker run -it -e EXPERIMENT_NAME="ex-1" -e EXPERIMENT_BIAS=0.7 -e EXPERIMENT_BIASED_COOKIE="ex-1=dest-1-9191-subset1" -e EXPERIMENT_COOKIE="ex-1" -e URL_LANDING_PAGE=http://kubist-demo.democluster.net -e URL_TARGET_PAGE=http://kubist-demo.democluster.net/cart?variant_id=1 -e NUMBER_OF_AGENTS=100 magneticio/experiment-tester:0.0.3
 ```
 
 This will start an application that will generate traffic towards the specified hostname.
@@ -201,7 +136,7 @@ For a more detailed explanation of what we are trying to accomplish le'ts look a
 - EXPERIMENT_COOKIE: the experiment cookie name
 - URL_LANDING_PAGE: the landing page url. This is the page to which all requests will go.
 - URL_TARGET_PAGE: the target page url, that is the page that is used by the experiment logic to assess the success rate of a specific subset. Only a subset of the total users will go this url after visiting the landing page.
-- EXPERIMENT_BIASED_COOKIE: the cookie value towards which we want to bias the traffic that is going to be generated. This basically indicates the subset that we want to see prevailing in the experiment.
+- EXPERIMENT_BIASED_COOKIE: the cookie value towards which we want to bias the traffic that is going to be generated. This basically indicates the subset that we want to see prevailing in the experiment. take care of noticing that a subset is identified in this case by the combination of destination, port and subset, so that in the example the value is dest-1-9191-subset1.
 - EXPERIMENT_BIAS: the bias ratio of the traffic. This tells the tester application by how much requests with the biased cookie should be more likely to reach the target.
 
 After looking at the environment vaiables it should be clear that we are generating the traffic in a way that will substantially favor subset1 over subset2.
@@ -228,6 +163,7 @@ You can see below an example of such a json.
 ```
 
 In this sample the number of elements is the number of users that got to the landing page of the service we are testing, while the average and standard deviation are calculated over the number of successful interactions of each user, i.e. the interactions that reached the specified target.
+<<<<<<< HEAD
 To deploy our sample datasource run 
 
 ```shell
@@ -249,14 +185,21 @@ https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/data-
 ```
 
 Now you can use Vamp Kubist client to check that all resources have been set up correctly and also query the stats endpoint of the newly deployed service to verify that it is reachable.
+=======
+To deploy the mock data source run
+
+```shell
+kubectl apply -f https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/data-source.yaml
+```
+
+After the command completes you will be able to see, by either using the client or kubectl, that a new deployment datasource has been created inside a new datasource-app application.
 Now all you need to do is set up the experiment by running
 
 ```shell
 vamp update experiment -f https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/experiment-custom-data-source.yaml
 ```
->>>>>>> Stashed changes
 
-which will aplly the following configuariont to experiment ex-1
+which will apply the following configuration to experiment ex-1
 
 ```yaml
 vampServiceName: vs-1
@@ -280,5 +223,5 @@ metadata:
 dataSourcePath: http://kubist-demo-datasource.democluster.net/stats
 ```
 
-Compared to the configuration used in the previous example the notable differences are that in this case you will be specifying a data source path with value **http://kubist-datasource.kubist-demo.svc.cluster.local:9090/stats**, to tell Vamp Kubist to use the data source exposed by that service, and you will also add a new metadata with key **complexmetricsdriver** and value **custom** in order to have Vamp Kubist use the custom implementation of the metrics driver. 
+Compared to the configuration used in the previous example the notable differences are that in this case you will be specifying a data source path with value **http://kubist-datasource.kubist-demo.svc.cluster.local:9191/stats**, to tell Vamp Kubist to use the data source exposed by that service, and you will also add a new metadata with key **complexmetricsdriver** and value **custom** in order to have Vamp Kubist use the custom implementation of the metrics driver. 
 Once the experiment has been set up, it will behave in the same way as the previous one, but using the newly defined data source.

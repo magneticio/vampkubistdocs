@@ -229,9 +229,9 @@ istio-injection: enabled
 
 The vamp-managed flag tells Vamp Kubist to import the namespace and its content by creating a new virtual cluster with the same name.
 A virtual cluster is nothing more than a wrapper of a kubernetes namespace and it is used by Vamp Kubist to keep track of its content and, optionally, to associate some metadata with it.
-In our example we have no need for such metadata, hence why we are specifyin the --init flag instead of provding a yaml file reference with -f.
+In our example we have no need for such metadata, hence why we are specifying the --init flag instead of providing a yaml file reference with -f.
 On the other hand, the istio-injection flag enables istio sidecar automatic injection in the pods inside the virtual cluster.
-Mind the fact that, since we are importing a virtual cluster with pre-existing deployments, those deployments will need to be restarted in order fot he pod to be injected.
+Mind the fact that, since we are importing a virtual cluster with pre-existing deployments, those deployments will need to be restarted in order for the pod to be injected.
 Vamp Kubist will take care of that without the need for the user to do anything.
 You can now list the virtualclusters to verify that everything is in order.
 
@@ -251,7 +251,7 @@ Now set the kubist-demo virtual cluster as the default one.
 vamp config set -r kubist-demo
 ```
 
-The deployments inside this virtual-cluster share a common label app: demo-app. This tells Vamp Kubist that all these deployments are actually different versions of the same aplicaiton.
+The deployments inside this virtual-cluster share a common label app: demo-app. This tells Vamp Kubist that all these deployments are actually different versions of the same application.
 Hence Vamp Kubist will import them grouped in a single application entity.
 You can see it by running 
 
@@ -259,7 +259,7 @@ You can see it by running
 vamp list applications
 ```
 
-which will return a single result list containing the demo-app applicaiton.
+which will return a single result list containing the demo-app application.
 If you now get the details of this application by running
 
 ```shell
@@ -282,7 +282,7 @@ status:
 virtualClusterName: kubist-demo
 ```
 
-as you can see inside the application status there'a s list of the deployments belonging to this application.
+as you can see inside the application status there is a list of the deployments belonging to this application.
 You can now get a deployment specification by running.
 
 ```shell
@@ -290,4 +290,4 @@ vamp get deployment deployment1 -a demo-app
 ```
 
 At this point you have a set of deployments grouped into an application inside a virtual cluster. 
-But what can you do with all that you set up? To delve into taht you can take a look at..
+But what can you do with all that you set up? To delve into that you can take a look at..

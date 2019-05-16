@@ -1,0 +1,10 @@
+application: datasource-app
+ports:
+  - name: http
+    port: 9090
+    targetPort: 9090
+    protocol: TCP
+subsets:
+  subset1:
+    labels:
+      deployment: datasource
