@@ -24,7 +24,7 @@ In this section we will explain and test each one of them
 
 The time based canary release is the simplest form of canary release, in which the only variable that matters is time. 
 Simply put, the weights will shift from the current configuration to desired target over time, increasing by the specificied step at each interval.
-Let's first move all the wight in the vamp service to subset1.
+Let's first move all the wight in the vamp service to subset2.
 You can do this by editing the vamp service and setting the weight for subset1 to 100 and the weight for subset2 to 0.
 
 ```shell
@@ -90,8 +90,8 @@ You can now periodically run
 vamp get vampservice vs-1
 ```
 
-to check progress on the canary release. 
-You will see weights shifting gradually towards subset2. in steps of 10.
+to check progress on the canary release.     
+You will see weights shifting gradually towards subset2. in steps of 10.    
 If you had more than two subsets available, i.e. if your configuration were like this
 
 ```yaml
@@ -192,7 +192,14 @@ A metric based canary release is driven by a condition based on a single metric 
 In this example we will use a metric based canary release to reproduce the behaviour observed with the health based canary release.
 Since an aggregated metric can be rather complex it is not possible to pass it as an inline parameter, so, to create this new canary release you will have to send a yaml file with its definition.
 To apply this canary release configuration you can rely on the resources created in the previous example and run
-After removing the previous canary release and restoring the vamp service and deployments to their original statuses, you can apply the metric based canary releas by running
+After removing the previous canary release and restoring the deployments to their original statuses, run the following command to evenly split the weights on vamp service vs-1
+
+```shell
+vamp update vampservice vs-1 -f https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/vampservice2.yaml
+```
+
+This is necessary because with thi kind of cnaary release youc annot specify a target, but reather the target is identified by the result in evaluating the related metrics. For this reason, both subsets must be initally reachable.
+Once this has been done, you can apply the metric based canary releas by running
 
 ```shell
 vamp create canaryrelease vs-1 -f https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/metric-canary.yaml
@@ -238,7 +245,13 @@ To specify more complex conditions you will have to use a custom canary release.
 
 A custom canary release allows you to specify a rather complex condition to identify the target subset using one or more metrics.
 In this example we will again reproduce the previous example, but this time using a custom condition that achieves the same result.
-To create such canary release you can run
+take care of resetting the initial status of the vamp service so that the weights are split evenly. As stated earlier you can do it by running
+
+```shell
+vamp update vampservice vs-1 -f https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/vampservice2.yaml
+```
+
+Now, to create such a canary release, you can run
 
 ```shell
 vamp create canaryrelease vs-1 -f https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/custom-canary.yaml
