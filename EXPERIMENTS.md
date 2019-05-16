@@ -120,7 +120,7 @@ Once this is done, the cookie server redirects the user back to the original url
 Thanks to our reliance on cookies, we are able to provide users with a consistent experience while continuing our test, meaning that subsequent requests coming from the same user in a short period of time will always go to the same version.
 Depending on the test results, the policy defined on the vamp service will then move more users to more successful version, i.e. versions with a better ratio of users that reached the target over total number of users that reached the landing page.
 This is of course achieved by changing the weights of the cookie servers routes according to the step value defined in the experiment configuration.
-To handle all of this the experiment created an extra destiantion ex-1 and two deployments ex-1-dest-1-9191-subset1 and ex-1-dest-1-9191-subset2 which are running the cookie servers for each cookie value.
+To handle all of this the experiment created an extra destination ex-1 and two deployments ex-1-dest-1-9191-subset1 and ex-1-dest-1-9191-subset2 which are running the cookie servers for each cookie value.
 
 You can test the experiment by using the tester docker image shown in the [canary release section](CANARY_RELEASE.md).
 To do that execute
@@ -130,16 +130,16 @@ docker run -it -e EXPERIMENT_NAME="ex-1" -e EXPERIMENT_BIAS=0.7 -e EXPERIMENT_BI
 ```
 
 This will start an application that will generate traffic towards the specified hostname.
-For a more detailed explanation of what we are trying to accomplish le'ts look at all the environment variables we are setting and at their meaning
+For a more detailed explanation of what we are trying to accomplish let's look at all the environment variables we are setting and at their meaning
 
 - EXPERIMENT_NAME: the experiment name
 - EXPERIMENT_COOKIE: the experiment cookie name
 - URL_LANDING_PAGE: the landing page url. This is the page to which all requests will go.
 - URL_TARGET_PAGE: the target page url, that is the page that is used by the experiment logic to assess the success rate of a specific subset. Only a subset of the total users will go this url after visiting the landing page.
-- EXPERIMENT_BIASED_COOKIE: the cookie value towards which we want to bias the traffic that is going to be generated. This basically indicates the subset that we want to see prevailing in the experiment. take care of noticing that a subset is identified in this case by the combination of destination, port and subset, so that in the example the value is dest-1-9191-subset1.
+- EXPERIMENT_BIASED_COOKIE: the cookie value towards which we want to bias the traffic that is going to be generated. This basically indicates the subset that we want to see prevailing in the experiment. Take care of noticing that a subset is identified in this case by the combination of destination, port and subset, so that in the example the value is dest-1-9191-subset1.
 - EXPERIMENT_BIAS: the bias ratio of the traffic. This tells the tester application by how much requests with the biased cookie should be more likely to reach the target.
 
-After looking at the environment vaiables it should be clear that we are generating the traffic in a way that will substantially favor subset1 over subset2.
+After looking at the environment variables it should be clear that we are generating the traffic in a way that will substantially favor subset1 over subset2.
 So, while running this test you will see the weights in the vamp service gradually shifting towards subset1, until the point were subset2 will become unavailable, thus effectively completing the A/B testing.
 
 ## Setting up a custom data source
@@ -162,7 +162,7 @@ You can see below an example of such a json.
 }
 ```
 
-In this sample the number of elements is the number of users that got to the landing page of the service we are testing, while the average and standard deviation are calculated over the number of successful interactions of each user, i.e. the interactions that reached the specified target.
+In this sample the number of elements is the number of users that go to the landing page of the service we are testing, while the average and standard deviation are calculated over the number of successful interactions of each user, i.e. the interactions that reached the specified target.
 <<<<<<< HEAD
 To deploy our sample datasource run 
 
