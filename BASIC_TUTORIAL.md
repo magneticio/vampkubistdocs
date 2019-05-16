@@ -47,7 +47,7 @@ As you can see we are referencing application kubist-demo to tell Vamp Kubist th
 Then we are defining which ports we want to be available, in this case we are interested only in port 9191.
 Lastly we define 2 subsets, one for each deployment, using the deployment label to identify them. 
 If you don't have a deployment label you can use any other one or a combination of different labels.
-The purpose of subsets is basically to identify different versions of the deploymnet in order to be able, at a later stage, to route traffic to them.
+The purpose of subsets is basically to identify different versions of the deployment in order to be able, at a later stage, to route traffic to them.
 You can now verify that the destination has been created by running 
 
 ```shell
@@ -83,7 +83,7 @@ Note that Google DNS has multiple sets of nameservers so when a zone is created 
 ![](images/screen2.png)
 
 When a gateway is created, Vamp Kubist will set up the zone record for you and subsequently list the name servers in the UI. Let’s Encrypt authentication requires the name servers to be updated.
-AT this point you need to tell Vamp Kubist to use Google Cloud DNS. You can do that by updating the cluster1 specification with two extra metadata fields: 
+At this point you need to tell Vamp Kubist to use Google Cloud DNS. You can do that by updating the cluster1 specification with two extra metadata fields: 
 - google_project_id: which is of course you google project id
 - google_service_account: which is the service account key in json format. You can easily obtain it by following [this](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) guide.
 
@@ -163,7 +163,7 @@ You should be able to find a deployment, a service and a horizontal pod autoscal
 
 Even though we successfully created a gateway we are still unable to reach the service. 
 To do that we need one final step, that is to create a vamp service in order to handle the routing of requests towards it.
-A vamp service is a wrapper around a istio virtual service. Just like its istio counterpart it allows for the specification of different weights and conditions for each of its route.
+A vamp service is a wrapper around an istio virtual service. Just like its istio counterpart it allows for the specification of different weights and conditions for each of its route.
 A vamp service can potentially manage traffic coming from different gateways and directed towards different destinations, but for now we will limit ourselves to just one gateway and one destination.
 To create the vamp service first download the [vamp service specification](https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/vampservice.yaml) and edit the hostname to whatever you specified for the gateway, then execute
 
