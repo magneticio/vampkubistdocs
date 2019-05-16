@@ -156,18 +156,18 @@ At any time you can revoke a user's role with the command
 vamp revoke --user user1 --role project-admin -p project1
 ```
 
-## Granting permissiosn to a user
+## Granting permissions to a user
 
 What, however, if we wanted to grant a user access to a very specific resource, rather than an entire project?
 That can be done by granting permissions.
-You can grant a permission on any resource by specifying the permissions read/write/delete/editAcess flags with the following command
+You can grant a permission on any resource by specifying the permissions read/write/delete/editAccess flags with the following command
 
 ```shell
 vamp grant --user user1 --permission rwda -p project1 -c cluster1 -r vc1 -a app1 --kind deployment1 --name deploymentname
 ```
 
 More specifically this command will grant user1 permissions to read, write, delete and edit the access to a deployment1 in application app1which resides in virtual cluster vc1 on cluster cluster1 inside project project1.
-Of course if you execute noew this command it will failm since the target resource does not exist, but we can still try this by creating a new project, project2 and then running
+Of course if you execute now this command it will fail since the target resource does not exist, but we can still try this by creating a new project, project2 and then running
 
 
 ```shell
