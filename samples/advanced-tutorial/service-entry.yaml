@@ -1,0 +1,5 @@
+hosts:
+  - app2.democluster.net
+ports:
+  - port: 80
+    protocol: http

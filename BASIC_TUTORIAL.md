@@ -139,7 +139,7 @@ vamp create gateway gw-1 -f ./yougateway.yaml
 
 where the gateway specification is
 
-```shell
+```yaml
 servers:
   - port: 80
     protocol: http
@@ -158,6 +158,25 @@ kubectl get gateway -n=kubist-demo -o yaml
 You will be able to see that a gateway named gw-1 has been created with the same specification provided in the yaml.
 You can also check inside the istio-system namespace in order to take a look at the additional resources that have been created.
 You should be able to find a deployment, a service and a horizontal pod autoscaler, all of them with the same name: gw1-gateway.
+
+### Secured hostname
+
+Vamp Kubist also supports the creation of secured hostnames. To that end Vamp Kubist integrates with [Let’s Encrypt](https://letsencrypt.org/).
+Settig up a certified hostname is not much different from what we've seen so far.
+Take a look at the example below
+
+```yaml
+servers:
+  - port: 80
+    protocol: http
+    hosts:
+      - kubist-cert-demo.democluster.net    
+    certifiedHost: kubist-cert-demo.democluster.net
+```
+
+The certified host will be used for registering to DNS and to Let’s Encrypt. There can be only one secured host per port due to TCP protocol limitations. The default port for HTTPS is 443.
+Please note that, Vamp Kubist makes some assumptions regarding hostnames, When you have a service hostname like service-name.domain-name.com.   
+We assume that domain-name.com will be used as your zone name. Vamp Kubist currently create a certificate per hostname, but we are planning to add domain-wise certificates in a later release.
 
 ## Vamp Service creation
 

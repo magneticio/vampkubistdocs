@@ -1,0 +1,15 @@
+gateways:
+  - gw-app1
+hosts:
+  - app4.democluster.net
+routes:
+  - retries:
+      attempts: 5
+      timeout: 3
+    protocol: http
+    weights:
+      - destination: app2.democluster.net
+        port: 9191
+        version: subset3
+        weight: 100
+exposeInternally: true
