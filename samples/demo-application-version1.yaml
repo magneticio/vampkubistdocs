@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: vamp-demo
+  name: kubist-demo
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
