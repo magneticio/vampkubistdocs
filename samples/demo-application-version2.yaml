@@ -7,7 +7,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    app: application
+    app: demo-app
     deployment: deployment2
     version: version2
   name: deployment2
@@ -16,13 +16,13 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: application
+      app: demo-app
       deployment: deployment2
       version: version2
   template:
     metadata:
       labels:
-        app: application
+        app: demo-app
         deployment: deployment2
         version: version2
     spec:
