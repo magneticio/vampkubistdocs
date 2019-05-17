@@ -1,0 +1,16 @@
+application: app2
+ports:
+  - name: http
+    port: 9191
+    targetPort: 9191
+    protocol: TCP
+subsets:
+  subset1:
+    labels:
+      deployment: deployment1
+  subset2:
+    labels:
+      deployment: deployment2
+  subset3:
+    labels:
+      deployment: deployment3

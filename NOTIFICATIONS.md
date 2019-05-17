@@ -1,7 +1,21 @@
 # Notificaitons
 
-Vmap Kubist support slack notifications of various events such as resources update and deletion or a canary release progress.
-In order to access this feature it is necessary to configure slack access for given project or cluster.
+Most of the operations done through Vamp Kubist are asynchronous or long running ones, so it is quite useful to have notifications that relieve the user from the need of constantly checking resources status to get a picture of what is going on.
+Vamp Kubist supports two kinds of notifications, that is desktop notifications and Slack notifications.
+
+## Desktop notifications
+
+Desktop notifications can be enabled from vamp kubist client by opening a new terminal and running 
+
+```shell
+vamp notificationservice --desktop
+```
+
+While this command is running, all events from the vamp instance you are currently logged in will be send to you as desktop notifications.
+
+## Slack notifications
+
+In order to set up Slack notifications it is necessary to configure Slack access for given project or cluster.
 Doing this is traightforward.
 Supposing you have a project named project1 you can run
 

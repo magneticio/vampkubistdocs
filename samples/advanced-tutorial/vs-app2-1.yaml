@@ -1,0 +1,22 @@
+gateways:
+  - gw-app2
+hosts:
+  - gw-app2-2.democluster.net
+routes:
+  - condition: uri prefix "/service1"
+    rewrite: "/"
+    protocol: http
+    weights:
+      - destination: dest-app-1.kubist-test1.svc.cluster.local
+        port: 9191
+        version: subset3
+        weight: 100
+  - condition: uri prefix "/service2"
+    rewrite: "/"
+    protocol: http
+    weights:
+      - destination: dest-app-2
+        port: 9191
+        version: subset1
+        weight: 100
+exposeInternally: true

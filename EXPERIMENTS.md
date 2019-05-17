@@ -162,9 +162,8 @@ You can see below an example of such a json.
 }
 ```
 
-In this sample the number of elements is the number of users that go to the landing page of the service we are testing, while the average and standard deviation are calculated over the number of successful interactions of each user, i.e. the interactions that reached the specified target.
-<<<<<<< HEAD
-To deploy our sample datasource run 
+In this sample the number of elements is the number of users that got to the landing page of the service we are testing, while the average and standard deviation are calculated over the number of successful interactions of each user, i.e. the interactions that reached the specified target.
+To deploy our sample data source run
 
 ```shell
 kubectl apply -f https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/data-source.yaml
@@ -185,15 +184,7 @@ https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/data-
 ```
 
 Now you can use Vamp Kubist client to check that all resources have been set up correctly and also query the stats endpoint of the newly deployed service to verify that it is reachable.
-=======
-To deploy the mock data source run
-
-```shell
-kubectl apply -f https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/data-source.yaml
-```
-
-After the command completes you will be able to see, by either using the client or kubectl, that a new deployment datasource has been created inside a new datasource-app application.
-Now all you need to do is set up the experiment by running
+Once you are comfortable with proceeding, all you need to do is set up the experiment by running
 
 ```shell
 vamp update experiment -f https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/experiment-custom-data-source.yaml

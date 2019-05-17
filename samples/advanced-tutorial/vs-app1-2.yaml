@@ -1,0 +1,12 @@
+gateways:
+  - gw-app1
+hosts:
+  - gw-app1-2.democluster.net
+routes:
+  - protocol: http
+    weights:
+      - destination: dest-app-1
+        port: 9191
+        version: subset2
+        weight: 100
+exposeInternally: true
