@@ -11,7 +11,7 @@ metadata:
     deployment: deployment1
     version: version1
   name: deployment1
-  namespace: vamp-demo
+  namespace: kubist-demo
 spec:
   replicas: 1
   selector:
