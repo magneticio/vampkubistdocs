@@ -1,0 +1,20 @@
+gateways:
+- gw-1
+hosts:
+routes:
+- condition: uri prefix "/v1"
+  rewrite: "/"
+  protocol: http
+  weights:
+  - destination: shop-conditional-destination
+    port: 8080
+    version: subset1
+    weight: 100
+- condition: uri prefix "/v2"
+  rewrite: "/"
+  protocol: http
+  weights:
+  - destination: shop-conditional-destination
+    port: 8080
+    version: subset2
+    weight: 100
