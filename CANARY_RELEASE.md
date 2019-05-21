@@ -3,6 +3,15 @@
 In this tutorial we will present all the steps required to use the canary releasing features of Vamp Kubist.
 We will do that by setting up a canary release over two different versions of the same service which will be exposed outside the cluster.
 
+## Table of contents
+
+* [Requirements](#requirements)
+* [Canary release types](#canary-release-types)
+    * [Time based canary release](#time-based-canary-release)
+    * [Health based canary release](#health-based-canary-release)
+    * [Metric based canary release](#metric-based-canary-release)
+    * [Custom canary release](#custom-canary-release)
+
 ## Requirements
 
 In order to perform a canary release you need to have an application with at least two deployments installed in the cluster.

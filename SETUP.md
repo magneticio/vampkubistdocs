@@ -6,9 +6,9 @@ If you are instead running Vamp Kubist outside a Cluster there are a few extra s
 # Table of contents
 
 * [Project creation](#project-creation)
-* [User creation](#user-creation)
 * [Cluster creation](#cluster-creation)
-* [Istio setup](#istio-setup)
+    * [Istio setup](#istio-setup)
+* [Creating namespaces and deployments](#creating-namespaces-and-deployments)
 
 ## Project creation
 

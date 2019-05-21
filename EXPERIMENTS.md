@@ -3,6 +3,12 @@
 Experiments are a Vamp Kubist feature that quickly allows users to run A/B testing over a service.
 This is achieved by setting up a specific policy that interacts with a target vamp service.
 
+## Table of contents
+
+* [Prerequisites](#prerequisites)
+* [Creating an Experiment](#creating-an-experiment)
+* [Setting up a custom data source](#setting-up-a-custom-data-source)
+
 ## Prerequisites
 
 In order to perform a experiment you need to have an application with at least two deployments installed in the cluster.

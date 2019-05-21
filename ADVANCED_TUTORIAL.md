@@ -9,6 +9,11 @@ The final goal of this example is shown in the image below.
 As you can see, at the end of this tutorial you will have three virtual clusters, two of them on a cluster and the third one on another cluster.    
 Each one of the virtual cluster will have its own deployments and a different networking infrastructure.
 
+## Table of contents
+
+* [Requirements](#requirements)
+    * [Setting up the environment](#setting-up-the-environment)
+
 ## Requirements
 
 At least two clusters and a vamp installation.
@@ -242,7 +247,7 @@ exposeInternally: true
 ```
 
 If you try now to send requests to the specified hostname with the appropriate url you will be redirected to the correct application.
-**Please note that there's currently a bug with the demo app paths not being elative, that will cause the page not to be displayed correctly**
+**Please note that there's currently a bug with the demo app paths not being relative, that will cause the page not to be displayed correctly**
 Our work with kubist-test2 is finished, let's now focus on the last virtual cluster: kubist-test3.
 
 Let's first move on the second cluster, which we will call cluster2.
