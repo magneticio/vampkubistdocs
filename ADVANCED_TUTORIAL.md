@@ -4,7 +4,7 @@ In this section we want to better showcase what Vamp Kubist and Istio can do.
 In order to do so we will set up an entire environment with multiple virtual clusters and deployments.  
 The final goal of this example is shown in the image below.
 
-![](../images/screen4.png)
+![](./images/screen4.png)
 
 As you can see, at the end of this tutorial you will have three virtual clusters, two of them on a cluster and the third one on another cluster.    
 Each one of the virtual cluster will have its own deployments and a different networking infrastructure.
