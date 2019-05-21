@@ -1,35 +1,46 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    istio-injection: enabled
+    vamp-managed: enabled
+  name: kubist-test3
+spec:
+  finalizers:
+  - kubernetes
+status:
+  phase: Active
+---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    app: demo-app
-  name: deployment2
-  namespace: kubist-demo
+    app: app3
+  name: deployment1
+  namespace: kubist-test3
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: demo-app
-      deployment: deployment2
+      app: app3
+      deployment: deployment1
   template:
     metadata:
       labels:
-        app: demo-app
-        deployment: deployment2
+        app: app3
+        deployment: deployment1
     spec:
       containers:
       - env:
         - name: SHOP_VERSION
-          value: "2"
+          value: "1"
         - name: GET_FEEDBACK
           value: "no"
         - name: VAMP_ELASTICSEARCH_URL
           value: "http://es-service:9200"
-        - name: FAILURE
-          value: "0.5"
         image: magneticio/simpleservice:2.0.12
         imagePullPolicy: IfNotPresent
-        name: deployment2-0
+        name: deployment1-0
         ports:
         - containerPort: 9191
           protocol: TCP

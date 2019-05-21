@@ -6,12 +6,22 @@ The final goal of this example is shown in the image below.
 
 ![](../images/screen4.jpg)
 
-As you can see, at the end of this tutorial you will have three virtual clusters, each one with its own deployments and a different networking infrastructure.
-**Before continuing make sure to have a similar setup as presented in the [setup section](SETUP.md) and to have selected cluster cluster1.**
-The first step is to set up the virtual clusters and deployments and you can quickly do that by applying the [full-example-setup.yaml](samples/full-example-setup.yaml) with the command:
+As you can see, at the end of this tutorial you will have three virtual clusters, two of them on a cluster and the third one on another cluster.    
+Each one of the virtual cluster will have its own deployments and a different networking infrastructure.
+
+## Requirements
+
+At least two clusters and a vamp installation.
+The [setup section](SETUP.md) can help you with creating the two necessary clusters.
+You can either use cluster default and cluster1 as the two clusters or add a new cluster2.
+
+## Setting up the environment
+
+The first step is to set up the virtual clusters and deployments on on the first cluster, which will be called cluster1 in the rest of the tutorial. 
+You can quickly do that by applying the [cluster1-setup.yaml](samples/full-example-setup.yaml) with the command:
 
 ```shell
-kubectl apply -f https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/advanced-tutorial/full-example-setup.yaml
+kubectl apply -f https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/advanced-tutorial/cluster1-setup.yaml
 ```
 
 After running the command, by running 
@@ -25,7 +35,6 @@ you should get the following response.
 ```shell
 - kubist-test1
 - kubist-test2
-- kubist-test3
 ```
 
 As you can see the virtual clusters have all been imported and you will be able to see the applications and the deployments they contain by running
@@ -35,7 +44,6 @@ vamp list applications -r kubist-test1
 
 vamp list applications -r kubist-test2
 
-vamp list applications -r kubist-test3
 ```
 
 Let's now focus on virtual cluster kubist-test1, so first of all select it with
@@ -234,16 +242,24 @@ exposeInternally: true
 ```
 
 If you try now to send requests to the specified hostname with the appropriate url you will be redirected to the correct application.
+**Please note that there's currently a bug with the demo app paths not being elative, that will cause the page not to be displayed correctly**
 Our work with kubist-test2 is finished, let's now focus on the last virtual cluster: kubist-test3.
-In this virtual cluster, as shown in the initial graph, we want to allow access to vamp service vs-app1-3 through gateway gw-app-2 from outside the Cluster.
-**Note that this last example can be set up even on an entirely different cluster from which the original cluster can be reached. We are limiting ourselves to use a vamp clutser for simplicty's sake.
-There are however some real life scenarios in which you might actually want to do that, for example to take advantage of caching.**
-External services are normally not reachable from pods belonging to the Istio Mesh, hence we have to somehow make the host defined on Gateway gw-2 accessible. Service entries are an Istio resource that can do just that.
+
+Let's first move on the second cluster, which we will call cluster2.
+Now we need to set up the virtual cluster by running.
+
+```shell
+kubectl apply -f https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/advanced-tutorial/cluster2-setup.yaml
+```
+
+In this virtual cluster, as shown in the initial graph, we want to bw able to access hostname gw-app2-1.democluster.net from a pod inside the virtual cluster.
+However, hostname gw-app2-1.democluster.net is outside cluster2 and external services are normally not reachable from pods belonging to the Istio Mesh, hence we have to somehow make the host defined on gateway gw-app2 accessible.    
+Service entries are an Istio resource that can do just that.
 We are thus going to create one of them with name ex-svc-1 this configuration.
 
 ```yaml
 hosts:
-  - app2.democluster.net
+  - gw-app2-1.democluster.net
 ports:
   - port: 80
     protocol: http 
@@ -252,12 +268,25 @@ ports:
 By using kubectl to log into one of the pods running into the kubist-test3 namespace you will now be able to send requests to gateway gw-app2-1.democluster.net going outside the cluster, like this:
 
 ````
-curl vamp-gw2-test.democluster.net
+curl http://gw-app2-1.democluster.net/service1
 ````
 
-where vamp-gw2-test.democluster.net should be replaced by the hostname you defined previously.
-Thanks to the service entry you can now also add a vmap service definition that references the external service and use it to define timeouts or retry policies as shown in the following image.
+where gw-app2-1.democluster.net should be replaced by the hostname you defined previously.
+Thanks to the service entry you can now also add a vmap service definition that references the external service and use it to define timeouts or retry policies as shown in the configuration below.
 
-![](../images/screen40.png)
+```yaml
+gateways:
+hosts:
+  - gw-app2-1.democluster.net
+routes:
+  - protocol: http
+    retries:
+      attempts: 5
+      timeout: 3
+    weights:
+      - destination: gw-app2-1.democluster.net
+        weight: 100
+exposeInternally: true
+```
 
-This concludes the tutorial, but feel free to keep on experimenting on the environment you just created; it makes for a good basis to try different setups and explore the available configuration options.
+This concludes the tutorial, but feel free to keep on experimenting on the environment you just created; it makes for a good foundation to try different setups and explore the available configuration options.

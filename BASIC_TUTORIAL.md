@@ -101,8 +101,7 @@ metadata:
   cacertdata: somecert
   serviceaccount_token: someserviceaccount
   url: https://0.0.0.1
-  google_project_id: some project id
-  google_service_account: >
+c
                           "{
                              "type": "service_account",
                              "project_id": "some project id",
@@ -171,7 +170,8 @@ servers:
     protocol: http
     hosts:
       - kubist-cert-demo.democluster.net    
-    certifiedHost: kubist-cert-demo.democluster.net
+    certifiedHost: 
+      host: kubist-cert-demo.democluster.net
 ```
 
 The certified host will be used for registering to DNS and to Let’s Encrypt. There can be only one secured host per port due to TCP protocol limitations. The default port for HTTPS is 443.

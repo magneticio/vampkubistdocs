@@ -1,5 +1,5 @@
-servers:
+hosts:
+  - gw-app2-1.democluster.net
+ports:
   - port: 80
     protocol: http
-    hosts:
-      - gw-app2-1.democluster.net

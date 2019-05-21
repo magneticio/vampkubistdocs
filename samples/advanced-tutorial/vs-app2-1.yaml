@@ -1,7 +1,7 @@
 gateways:
   - gw-app2
 hosts:
-  - gw-app2-2.democluster.net
+  - gw-app2-1.democluster.net
 routes:
   - condition: uri prefix "/service1"
     rewrite: "/"

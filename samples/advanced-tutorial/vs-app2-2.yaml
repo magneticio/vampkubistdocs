@@ -1,0 +1,11 @@
+hosts:
+  - gw-app2-1.democluster.net
+routes:
+  - protocol: http
+    retries:
+      attempts: 5
+      timeout: 3
+    weights:
+      - destination: gw-app2-1.democluster.net
+        weight: 100
+exposeInternally: true
