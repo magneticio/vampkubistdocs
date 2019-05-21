@@ -1,0 +1,17 @@
+gateways:
+  - gw-1
+  - mesh
+hosts:
+  - "test.test.com"
+routes:
+  - protocol: http
+    weights:
+      - destination: dest-1
+        port: 9191
+        version: subset1
+        weight: 100
+      - destination: dest-1
+        port: 9191
+        version: subset2
+        weight: 0
+exposeInternally: false

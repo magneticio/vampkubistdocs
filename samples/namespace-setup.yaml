@@ -33,16 +33,6 @@ spec:
         image: magneticio/simpleservice:2.0.12
         imagePullPolicy: IfNotPresent
         name: deployment1-0
-        livenessProbe:
-          failureThreshold: 5
-          httpGet:
-            path: /health
-            port: 9191
-            scheme: HTTP
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 20
-        name: deployment5-0
         ports:
         - containerPort: 9191
           protocol: TCP
@@ -77,16 +67,6 @@ spec:
         image: magneticio/simpleservice:2.0.12
         imagePullPolicy: IfNotPresent
         name: deployment2-0
-        livenessProbe:
-          failureThreshold: 5
-          httpGet:
-            path: /health
-            port: 9191
-            scheme: HTTP
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 20
-        name: deployment5-0
         ports:
         - containerPort: 9191
           protocol: TCP

@@ -3,6 +3,15 @@
 Vamp Kubist allows you to create new users and associate different, customizable roles to them in order to control their rights to access resources.
 It is recommended to use the root user only for the initial setup and rely on other users for everything else.
 
+## Table of contents
+
+* [Prerequisites](#prerequisites)
+* [User creation](#user-creation)
+* [User's authorization](#users-authorization)
+    * [Role creation](#role-creation)
+    * [Granting a role to a user](#granting-a-role-to-a-user)
+* [Granting permissions to a user](#granting-permissions-to-a-user)
+
 ## Prerequisites
 
 You should have completed the Installation and logged in as a user who has user create permission such as root user.

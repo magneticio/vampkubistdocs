@@ -1,3 +1,5 @@
+# Installation
+
 ## Table of Contents
 
 * [Prerequisites](#prerequisites)

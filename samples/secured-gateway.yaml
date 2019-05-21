@@ -1,0 +1,7 @@
+servers:
+  - port: 443
+    protocol: https
+    hosts:
+      - kubist-demo-cert.democluster.net
+    certifiedHost:
+      host: kubist-demo-cert.democluster.net
