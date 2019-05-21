@@ -1,6 +1,6 @@
 # Advanced Tutorial
 
-in this section we want to better showcase what Vamp Kubist and Istio can do.   
+In this section we want to better showcase what Vamp Kubist and Istio can do.   
 In order to do so we will set up an entire environment with multiple virtual clusters and deployments.  
 The final goal of this example is shown in the image below.
 
@@ -29,7 +29,7 @@ You can quickly do that by applying the [cluster1-setup.yaml](samples/full-examp
 kubectl apply -f https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/advanced-tutorial/cluster1-setup.yaml
 ```
 
-After running the command, by running 
+Once the command has done executing, you can verify the resources you just created by running
 
 ```shell
 vamp list virtualclusters
@@ -42,7 +42,8 @@ you should get the following response.
 - kubist-test2
 ```
 
-As you can see the virtual clusters have all been imported and you will be able to see the applications and the deployments they contain by running
+If you don't it just means kubist has not yet imported the namespace into a virtual cluster. Just retry in a few seconds.
+Once you get the response shown above, all virtual clusters will have been imported and you will be able to see the applications and the deployments they contain by running
 
 ```shell
 vamp list applications -r kubist-test1
@@ -51,13 +52,14 @@ vamp list applications -r kubist-test2
 
 ```
 
-Let's now focus on virtual cluster kubist-test1, so first of all select it with
+Let's now focus on virtual cluster kubist-test1.
+First of all select it with
 
 ```shell
 vamp config set -r kubist-test1
 ```
 
-The next step is to create a new destination for application app1.
+Now let's create a new destination for application app1.
 
 ```shell
 vamp create destination dest-app-1 -f https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/advanced-tutorial/dest-app-1.yaml
@@ -85,8 +87,8 @@ subsets:
 ```
 
 Now you can set up a gateway to expose the Service you just created to the outside.  
-**For this example to work properly you need to define your own hostnames for the gateways you are going to create.**
-So, choose two hostnames and specify them in the gateway configuration as shown below.
+**For this example to work properly you need to define your own hostnames for the gateway you are going to create.**
+Choose two hostnames and specify them in the gateway configuration as shown below.
 
 ```shell
 vamp create gateway gw-app1 -f ./yourgateway.yaml
@@ -103,12 +105,12 @@ servers:
       - gw-app1-2.democluster.net
 ```      
 
-As you can see the specification contains two different hostnames that we will use in the udnerlying vamp services.
-If you already followed the [setup section](SETUP.md), then the host name you specified will be associated, ater a short time, with you gateway's ip.   
+As you can see the specification contains two different hostnames that we will use in the underlying vamp services.
+If you already followed the [setup section](SETUP.md), then the hostname you specified will be associated, ater a short time, with you gateway's ip.   
 Otherwise we recommend you take a look at that section in order to set up the google credentials necessary to manage the hostsnames through Google DNS.
 
-Now that the gateway is setup you need only create a vamp service in order to finally be able to access the application.    
-To do that, use the following run
+Now that the gateway is setup you need only create a vamp service, in order to finally be able to access the application.    
+To do that, use the following command
 
 ```shell
 vamp create vampservice vs-app1-1 -f ./yourvampservice.yaml
@@ -136,7 +138,7 @@ exposeInternally: true
 Shortly after submitting you will be able to access application app1 using your hostname of choice.
 Let's map also the other hostname, using a second vamp service vs-app1-2 with the following specificaiton
 
-```shell
+```yaml
 gateways:
   - gw-app1
 hosts:
@@ -151,7 +153,7 @@ routes:
 exposeInternally: true
 ```
 
-Now, if you try calling the second hostname you will be sent to subset2 in the Service you created.
+Now, if you try calling the gw-app1-2.democluster.net hostname you will be sent to subset2 in the dest-app-1 destination you just created.
 At this point in the tutorial you succesfully mapped two hostnames to two separate subsets of a Service and are able to send requests to them from outside the Cluster.
 If you call gw-app1-1.democluster.net, or rather the real hostname you specified, from your browser this is what you will see
 
@@ -169,7 +171,7 @@ vamp config set -r kubist-test2
 ```
 
 This time you are going to create a single vamp service that will respond to a single hostname and that will dispatch requests to either app1 subset3 or app2 subset1.
-Dispatching of the requests will be regulated by the url invoked and the url itself will be rewritten before making the actual call to the Service itself.
+Dispatching of the requests will be regulated by the url invoked and the url itself will be rewritten before making the actual call to the service.
 Let's start with the easy stuff, that is creating destination dest-app-2 and gateway gw-app2 by using the following specificaitons.
 
 Destination:
@@ -257,10 +259,10 @@ Now we need to set up the virtual cluster by running.
 kubectl apply -f https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/advanced-tutorial/cluster2-setup.yaml
 ```
 
-In this virtual cluster, as shown in the initial graph, we want to bw able to access hostname gw-app2-1.democluster.net from a pod inside the virtual cluster.
+In this virtual cluster, as shown in the initial graph, we want to be able to access hostname gw-app2-1.democluster.net from a pod inside the virtual cluster.
 However, hostname gw-app2-1.democluster.net is outside cluster2 and external services are normally not reachable from pods belonging to the Istio Mesh, hence we have to somehow make the host defined on gateway gw-app2 accessible.    
 Service entries are an Istio resource that can do just that.
-We are thus going to create one of them with name ex-svc-1 this configuration.
+We are thus going to create one of them with name es-1 and this configuration.
 
 ```yaml
 hosts:
@@ -269,7 +271,8 @@ ports:
   - port: 80
     protocol: http 
 ```
- 
+
+As you can see the service entry configuration is straightforward and only specified the host name and the ports to be opened.
 By using kubectl to log into one of the pods running into the kubist-test3 namespace you will now be able to send requests to gateway gw-app2-1.democluster.net going outside the cluster, like this:
 
 ````
@@ -295,3 +298,4 @@ exposeInternally: true
 ```
 
 This concludes the tutorial, but feel free to keep on experimenting on the environment you just created; it makes for a good foundation to try different setups and explore the available configuration options.
+If you need to check the resources used for this advanced tutorial you can find them in the [advanced tutorial folder](https://github.com/magneticio/vampkubistdocs/tree/master/samples/advanced-tutorial).
