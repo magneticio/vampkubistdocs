@@ -34,7 +34,7 @@ spec:
           value: "no"
         - name: RAILS_RELATIVE_URL_ROOT
           value: "/v1"
-        image: magneticio/simpleservice:2.0.12
+        image: magneticio/simpleservice:2.0.14
         imagePullPolicy: IfNotPresent
         name: deployment1-0
         ports:
