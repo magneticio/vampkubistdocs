@@ -16,7 +16,7 @@
 To install the client on Mac or Linux, run the following command:
 
 ```shell
-base=https://github.com/magneticio/vampkubistcli/releases/download/0.0.14 &&
+base=https://github.com/magneticio/vampkubistcli/releases/download/0.0.55 &&
   curl -L $base/vamp-$(uname -s)-$(uname -m) >/usr/local/bin/vamp &&
   chmod +x /usr/local/bin/vamp
 ```
@@ -29,7 +29,7 @@ vamp version
 
 ## Fresh Cluster installation
 
-It is possible to install Vamp Kubist on a new cluster, with command line client. 
+It is possible to install Vamp Kubist on a new cluster, with command line client.
 this requires, however, setting up correctly the client configuration file.
 
 You can see below and example of the Vamp Kubist config.yaml file.
@@ -40,7 +40,7 @@ databaseUrl:
 databaseName: vamp
 repoUsername: dockerhubrepousername
 repoPassword: dockerhubrepopassword
-imageTag: 0.7.8
+imageTag: 0.7.13
 mode: IN_CLUSTER
 ```
 
@@ -87,6 +87,6 @@ Login with:
 vamp login --url https://ip:port --user root --cert ./cert.crt
 ```
 
-Copy paste the recommended command and execute it to login as root. You will be asked for the password that has been specifyied in the configuration file. Also, it is recommended to keep the certificate file. It is possible to get the certificate file by running the install command again.
+Copy paste the recommended command and execute it to login as root. You will be asked for the password that has been specified in the configuration file. Also, it is recommended to keep the certificate file. It is possible to get the certificate file by running the install command again.
 
 Congratulations, basic setup is complete!

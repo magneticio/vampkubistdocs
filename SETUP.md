@@ -20,7 +20,7 @@ You can create a new project, named project1, by running the following command:
 vamp create project project1 -f ./samples/project.yaml
 ```
 
-Where project.yaml contains the project configuration. 
+Where project.yaml contains the project configuration.
 
 ```yaml
 metadata:
@@ -28,14 +28,14 @@ metadata:
   key2: value2
 ```
 
-If you don't have files locally you can also load them from a remote location. 
-Resources for this readme are also located at https://github.com/magneticio/vampkubistdocs so the above command can also be rewitten as
+If you don't have files locally you can also load them from a remote location.
+Resources for this readme are also located at https://github.com/magneticio/vampkubistdocs so the above command can also be rewritten as
 
 ```shell
 vamp create project project1 -f https://raw.githubusercontent.com/magneticio/vampkubistdocs/master/samples/project.yaml
 ```
 
-The client allows you to pass a specifications as a json, yaml and either as a string or from a file. This command reads the input as json and passes the empty json object as configuration. 
+The client allows you to pass a specifications as a json, yaml and either as a string or from a file. This command reads the input as json and passes the empty json object as configuration.
 A Project doesn't have any mandatory fields, so an empty json is still valid.
 In case you want to just specify an empty definition you can add the init parameter, as shown below:
 
@@ -50,7 +50,7 @@ Once the Project has been created it can be selected as the current project by r
 vamp config set -p project1
 ```
 
-At any time you can list the available projects by running 
+At any time you can list the available projects by running
 
 ```shell
 vamp list projects
@@ -75,10 +75,10 @@ Create, list, get and delete commands are available for all other Vamp Kubist re
 ## Cluster creation
 
 After setting the current project to project1, granting user user1 the appropriate role and logging in with its credentials, you can proceed with adding and bootstrapping a new cluster.
-First make sure you have installed kubectl and authenticated to the cluster you want to be managed by vamp Kubist. 
+First make sure you have installed kubectl and authenticated to the cluster you want to be managed by vamp Kubist.
 The command line client will set up a service account user in your cluster and set up credentials to connect to your cluster in vamp.
 For this example, it is recommended that you have a cluster of at least 5 nodes, 2 CPU and 8 GB Ram per node. Otherwise you can have pending pods and initialisation will not finish.
-If everything is set, just run 
+If everything is set, just run
 
 ```
 vamp bootstrap cluster cluster1
@@ -95,7 +95,7 @@ You can check if your cluster is properly configured by running a get to the clu
 vamp get cluster cluster1
 ```
 
-with kubectl you can check the namespaces of vamp-system and istio-system and logging is created.
+with kubectl you can check the namespaces of vamp-system and istio-system are created.
 Vamp Kubist will run a job in vamp-system namespace to make sure that everything is properly installed and continue running this job until it is finished. Make sure that you have enough resources and there are no pending pods or pods in Crash Loop.
 
 If you have the watch command installed, we recommended running it to see installation process in action. You can do so with
@@ -148,8 +148,7 @@ This job is triggered if Vamp Kubist finds that any of these resources, making u
 - istio-sidecar-injector    
 - istio-statsd-prom-bridge  
 - istio-telemetry           
-- prometheus                
-- prometheus-external       
+- prometheus                      
 - servicegraph              
 - tracing                   
 - zipkin                    
@@ -164,7 +163,7 @@ This job is triggered if Vamp Kubist finds that any of these resources, making u
 - istio-mixer-post-install-account       
 - istio-mixer-service-account            
 - istio-pilot-service-account            
-- istio-sidecar-injector-service-account 
+- istio-sidecar-injector-service-account
 - prometheus   
 
 **ConfigMaps:**
@@ -177,25 +176,6 @@ This job is triggered if Vamp Kubist finds that any of these resources, making u
 - prometheus                              
 
 Besides these resources there are also some others that are required to handle metrics.
-These are located inside the logging namespace.
-
-**Deployments:**
-
-- elasticsearch  
-- fluentd-es     
-- kibana         
-
-**Services:**
-
-- elasticsearch         
-- elasticsearch-external
-- fluentd-es            
-- kibana                             
-
-**ConfigMaps:**
-
-- fluentd-es-config
-- mapping-config
 
 If any of these resources are missing, Vamp Kubist will try to install Istio.
 
@@ -253,7 +233,7 @@ vamp config set -r kubist-demo
 
 The deployments inside this virtual-cluster share a common label app: demo-app. This tells Vamp Kubist that all these deployments are actually different versions of the same application.
 Hence Vamp Kubist will import them grouped in a single application entity.
-You can see it by running 
+You can see it by running
 
 ```shell
 vamp list applications
@@ -289,5 +269,5 @@ You can now get a deployment specification by running.
 vamp get deployment deployment1 -a demo-app
 ```
 
-At this point you have a set of deployments grouped into an application inside a virtual cluster. 
+At this point you have a set of deployments grouped into an application inside a virtual cluster.
 But what can you do with all that you set up? To delve into that you can take a look at..
