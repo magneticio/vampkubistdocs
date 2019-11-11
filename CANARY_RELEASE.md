@@ -1,4 +1,4 @@
-# Basic Tutorial
+# Canary Release
 
 In this tutorial we will present all the steps required to use the canary releasing features of Vamp Kubist.
 We will do that by setting up a canary release over two different versions of the same service which will be exposed outside the cluster.
