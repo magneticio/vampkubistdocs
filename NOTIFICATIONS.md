@@ -10,7 +10,7 @@ Vamp Kubist supports two kinds of notifications, that is desktop notifications a
 * [Filtering notifications](#filtering-notifications)
     * [Notification Levels](#notification-levels)
     * [Configuring notification filters](#configuring-notification-filters)
-    * [Configuring global notification filters](#configuring global notification filters)
+    * [Configuring global notification filters](#configuring-global-notification-filters)
 
 ## Client configuration
 
@@ -103,7 +103,7 @@ It will then allow info and warning level notifications on slack and errors on s
 
 ### Configuring global notification filters
 
-Lastly it Vamp Kubist also supports specifying global notification filters for all executors or polciies of a certain type.
+Lastly, Vamp Kubist also supports specifying global notification filters for all executors or policies of a certain type.
 This is currently only doable by changing the values in Kubist application.conf, but it will soon be possible to achieve the same result through the API.
 Below you can find a configuration example.
 
