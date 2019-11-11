@@ -80,7 +80,7 @@ The command line client will set up a service account user in your cluster and s
 For this example, it is recommended that you have a cluster of at least 5 nodes, 2 CPU and 8 GB Ram per node. Otherwise you can have pending pods and initialisation will not finish.
 If everything is set, just run
 
-```
+```shell
 vamp bootstrap cluster cluster1
 ```
 
@@ -222,7 +222,7 @@ vamp list virtual_clusters
 The output of this command should be a single element list like the one below.
 
 ```shell
-- kubist-demo```
+- kubist-demo
 ```
 
 Now set the kubist-demo virtual cluster as the default one.
