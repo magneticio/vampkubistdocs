@@ -6,7 +6,7 @@
 * [Installation steps](#installation-steps)
 
 ## Prerequisites
-* An existing kubernetes cluster with Kubernetes version 1.9 or above installed.
+* An existing kubernetes cluster with Kubernetes versions between 1.9 and 1.3 installed. Kubernetes version 1.3 is recommended.
 * The current version has been tested only on Google Cloud, so it's recommended that you use that as well, in order to avoid issues.
 * Kubectl should be installed on the local computer with authorizations to access the cluster.
 * Curl should be installed locally.
@@ -16,7 +16,7 @@
 To install the client on Mac or Linux, run the following command:
 
 ```shell
-base=https://github.com/magneticio/vampkubistcli/releases/download/0.0.55 &&
+base=https://github.com/magneticio/vampkubistcli/releases/download/0.0.57 &&
   curl -L $base/vamp-$(uname -s)-$(uname -m) >/usr/local/bin/vamp &&
   chmod +x /usr/local/bin/vamp
 ```
@@ -40,7 +40,7 @@ databaseUrl:
 databaseName: vamp
 repoUsername: dockerhubrepousername
 repoPassword: dockerhubrepopassword
-imageTag: 0.7.13
+imageTag: 0.7.14
 mode: IN_CLUSTER
 ```
 
