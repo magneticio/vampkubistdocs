@@ -1,4 +1,4 @@
-# Notificaitons
+# Notifications
 
 Most of the operations done through Vamp Kubist are asynchronous or long running ones, so it is quite useful to have notifications that relieve the user from the need of constantly checking resources status to get a picture of what is going on.
 Vamp Kubist supports two kinds of notifications, that is desktop notifications and Slack notifications.
