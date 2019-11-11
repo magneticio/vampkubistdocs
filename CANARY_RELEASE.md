@@ -225,25 +225,26 @@ updateStep: 10
 policies:
   - name: MetricCanaryReleasePolicy
     parameters:
-      metric: internal_upstream_rq_2xx / upstream_rq_total
+      metric: response_code_2xx.sum / ( response_code_2xx.sum + response_code_5xx.sum)
 ```
 
 As you can see the specification now explicitly mentions the appropriate policy to be run and also contains the metric parameter with value 
 
 ```shell
-internal_upstream_rq_2xx / upstream_rq_total
+response_code_2xx.sum / requests.sum
 ```
 
 This aggregated metric calculates the ratio of successful responses over the total number of requests.
-Metrics names are loosely based on Prometheus metrics names stored by Envoy (they are usually the last part of the metric name).
+Metrics names are loosely based on Prometheus metrics names stored by Envoy.
 Some of the available metrics are:
 
-- **internal_upstream_rq_200**
-- **internal_upstream_rq_2xx**
-- **internal_upstream_rq_500**
-- **internal_upstream_rq_503**
-- **internal_upstream_rq_5xx**
-- **upstream_rq_total**
+- **response_code_200**
+- **response_code_2xx**
+- **response_code_500**
+- **response_code_503**
+- **response_code_5xx**
+- **requests**
+- **availability**
 
 Destination, port and subset are not specified in this new yaml, because the target is now dynamically determined by the policy itself as it evaluates the metric.
 You can test the outcome of this canary release the same way you tested the health based one, that is by generating traffic towards the service.
@@ -275,43 +276,35 @@ updateStep: 10
 policies:
   - name: CustomCanaryReleasePolicy
     parameters:
-      metric: if ( ( metric "dest-1" 9090 "subset1" "internal_upstream_rq_2xx" / metric "dest-1" 9090 "subset1" "upstream_rq_total" ) > ( metric "dest-1" 9090 "subset2" "internal_upstream_rq_2xx" / metric "dest-1" 9090 "subset2" "upstream_rq_total" ) ) { result = "dest-1 9090 subset1"; } else if ( ( metric "dest-1" 9090 "subset1" "internal_upstream_rq_2xx" / metric "dest-1" 9090 "subset1" "upstream_rq_total" ) < ( metric "dest-1" 9090 "subset2" "internal_upstream_rq_2xx" / metric "dest-1" 9090 "subset2" "upstream_rq_total" ) ) { result = "dest-1 9090 subset2"; } else { result = nil; } result
+      metric: |-
+        if ( ( metric "dest-1:9191/subset1" "response_code_2xx" / ( metric "dest-1:9191/subset1" "response_code_2xx" + metric "dest-1:9191/subset1" "response_code_5xx" ) ) > ( metric "dest-1:9191/subset2" "response_code_2xx" / ( metric "dest-1:9191/subset2" "response_code_2xx" + metric "dest-1:9191/subset2" "response_code_5xx" ) ) )
+        {
+          result = "dest-1:9191/subset1";
+        } else if ( metric "dest-1:9191/subset1" "response_code_2xx" / ( metric "dest-1:9191/subset1" "response_code_2xx" + metric "dest-1:9191/subset1" "response_code_5xx" ) < metric "dest-1:9191/subset2" "response_code_2xx" / ( metric "dest-1:9191/subset2" "response_code_2xx" + metric "dest-1:9191/subset2" "response_code_5xx" ) )
+        {
+          result = "dest-1:9191/subset2";
+        } else
+        {
+          result = nil;
+        }
+        result
+        
 ```
 
-As you can see we are specifying a CustomCanaryReleasePolicy with a metric parameter. 
-Below you can find the condition we are specifying in a more readable format.
-
-```shell
-if ( ( metric "dest-1" 9090 "subset1" "internal_upstream_rq_2xx" / 
-       metric "dest-1" 9090 "subset1" "upstream_rq_total" ) 
-       > 
-      ( metric "dest-1" 9090 "subset2" "internal_upstream_rq_2xx" / 
-        metric "dest-1" 9090 "subset2" "upstream_rq_total" ) ) { 
-        result = "dest-1 9090 subset1"; 
-      } 
-else if ( ( 
-      metric "dest-1" 9090 "subset1" "internal_upstream_rq_2xx" / 
-      metric "dest-1" 9090 "subset1" "upstream_rq_total" ) < 
-      ( metric "dest-1" 9090 "subset2" "internal_upstream_rq_2xx" / 
-      metric "dest-1" 9090 "subset2" "upstream_rq_total" ) ) { 
-      result = "dest-1 9090 subset2"; 
-      } 
-else 
-    { result = nil; } result
-```
+As you can see we are specifying a CustomCanaryReleasePolicy with a metric parameter.
 
 
 The metric keyword tells the condition parsers that the following values will identify a specific metric. 
 In this case a metric definition is given by
 
 ```shell
-metric destination-name port subset-name metric-name
+metric "destination-name:port/subset-name" "metric-name"
 ```
 
 so for example if we want to get the number of 200 responses for destination dest-1, port 9090 and subset subset1, the metric definition will be
 
 ```shell
-metric "dest-1" 9090 "subset1" "internal_upstream_rq_2xx"
+metric "dest-1:9090/subset1" "response_code_2xx"
 ```
 
 Now, by looking at this condition we can understand that it is simply telling Vamp Kubist to shift the weights towards the version that has the highest ratio of 200 over the total number of requests.
