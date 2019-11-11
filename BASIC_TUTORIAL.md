@@ -109,19 +109,20 @@ metadata:
   cacertdata: somecert
   serviceaccount_token: someserviceaccount
   url: https://0.0.0.1
-c
-                          "{
-                             "type": "service_account",
-                             "project_id": "some project id",
-                             "private_key_id": "some private key id",
-                             "private_key": "-----BEGIN PRIVATE KEY-----\nSome private ket\n-----END PRIVATE KEY-----\n",
-                             "client_email": "email.com",
-                             "client_id": "104717857076852671677",
-                             "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-                             "token_uri": "https://accounts.google.com/o/oauth2/token",
-                             "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-                             "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/dns-service-account%40vamp-177714.iam.gserviceaccount.com"
-                          }"
+  google_project_id: google-project-id
+  google_service_account: |
+    {
+      "type": "service_account",
+      "project_id": "google-project-id",
+      "private_key_id": "...",
+      "private_key": "-----BEGIN PRIVATE KEY-----...-----END PRIVATE KEY-----\n",
+      "client_email": "service-account@google-project-id.iam.gserviceaccount.com",
+      "client_id": "...",
+      "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+      "token_uri": "https://accounts.google.com/o/oauth2/token",
+      "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+      "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/..."
+    }
 ```
 
 you can just save it to a file and use it to perform the update by running:
