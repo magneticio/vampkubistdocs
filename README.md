@@ -18,4 +18,5 @@ To learn more about Vamp Kubist and what it can achieve you can check the follow
 * [A/B testing with experiments](EXPERIMENTS.md)
 * [Advanced tutorial](ADVANCED_TUTORIAL.md)
 * [Executors and policies](EXECUTORS_AND_POLICIES.md)
+* [Container resource optimizer](OPTIMIZER.md)
 * [API references](API.md)
