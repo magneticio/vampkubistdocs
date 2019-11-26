@@ -67,4 +67,4 @@ As you can see from the provided yaml, the Executor allows for the configuration
 More in detail MIN_CPU, MAX_CPU, MIN_MEMORY and MAX_MEMORY allow for configuring the boundaries for the tuning of cpu and memory requests and limits.
 OBSERVATION_MINUTES allows to specify the length of time the optimizer will observe the deployment behaviour before applying changes and INITIAL_POINTS allows to configure the number trial points before the algorithm actually starts working. 
 
-A container optimizer is entirey dependant to its associated deployment, so, should the deployment be deleted, Vmap Kubist will take care of also deleting the optimizer.
+A container optimizer is entirey dependant to its associated deployment, so, should the deployment be deleted, Vamp Kubist will take care of also deleting the optimizer.
