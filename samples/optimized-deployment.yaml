@@ -22,10 +22,9 @@ selectors:
 policyExecutor:
   name: OptimizedDeploymentPolicyExecutor
   parameters:
-    optimizer-config:
-      MIN_CPU: 400
-      MAX_CPU: 1000
-      MIN_MEMORY: 10000000
-      MAX_MEMORY: 200000000000
-      OBSERVATION_MINUTES: 2
-      INITIAL_POINTS: 3
+    MIN_CPU: 400
+    MAX_CPU: 1000
+    MIN_MEMORY: 10000000
+    MAX_MEMORY: 200000000000
+    OBSERVATION_MINUTES: 2
+    INITIAL_POINTS: 3
