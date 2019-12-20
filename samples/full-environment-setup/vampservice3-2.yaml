@@ -1,0 +1,15 @@
+gateways:
+  - gw-3
+hosts:
+  - eshop-test1-deluxe-uk.democluster.net
+routes:
+  - protocol: http
+    weights:
+      - destination: dest-shop-deluxe-svc
+        port: 9090
+        version: 1.0.0
+        weight: 100
+exposeInternally: false
+metadata:
+  ui-description: frontend for deluxe e-shop
+  ui-service-name: e-shop deluxe frontend

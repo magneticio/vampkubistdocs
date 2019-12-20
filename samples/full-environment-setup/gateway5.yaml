@@ -1,0 +1,6 @@
+servers:
+  - port: 80
+    protocol: http
+    hosts:
+      - eshop-18dec-checkout-ca.democluster.net
+      - eshop-18dec-deluxe-ca.democluster.net

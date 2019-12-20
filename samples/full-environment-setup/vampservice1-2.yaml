@@ -1,0 +1,15 @@
+gateways:
+  - gw-1
+hosts:
+  - eshop-testing2-frontend-eu.democluster.net
+routes:
+  - protocol: http
+    weights:
+      - destination: dest-shop-frontend-svc
+        port: 9090
+        version: 1.1.6
+        weight: 100
+exposeInternally: false
+metadata:
+  ui-description:  frontend service for the e-shop
+  ui-service-name: e-shop frontend
