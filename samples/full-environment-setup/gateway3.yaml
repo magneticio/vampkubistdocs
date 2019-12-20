@@ -1,0 +1,6 @@
+servers:
+  - port: 80
+    protocol: http
+    hosts:
+      - eshop-test1-checkout-uk.democluster.net
+      - eshop-test1-deluxe-uk.democluster.net

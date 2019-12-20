@@ -1,0 +1,142 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ca-ns
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: demo-app10
+  name: deployment1
+  namespace: ca-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-app10
+      version: 3.2.0
+  template:
+    metadata:
+      labels:
+        app: demo-app10
+        version: 3.2.0
+    spec:
+      containers:
+        - env:
+            - name: SHOP_VERSION
+              value: "1"
+          image: avalcepina/testservice:1.1.0
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 5
+            httpGet:
+              path: /
+              port: 9090
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 20
+          name: deployment1-0
+          ports:
+            - containerPort: 9090
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 600Mi
+            requests:
+              cpu: 400m
+              memory: 100Mi
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: demo-app10
+  name: deployment2
+  namespace: ca-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-app10
+      version: 4.1.2
+  template:
+    metadata:
+      labels:
+        app: demo-app10
+        version: 4.1.2
+    spec:
+      containers:
+        - env:
+            - name: SHOP_VERSION
+              value: "2"
+          image: avalcepina/testservice:1.1.0
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 5
+            httpGet:
+              path: /
+              port: 9090
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 20
+          name: deployment2-0
+          ports:
+            - containerPort: 9090
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 600Mi
+            requests:
+              cpu: 400m
+              memory: 100Mi
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: demo-app10
+  name: deployment3
+  namespace: ca-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-app10
+      version: 2.1.0
+  template:
+    metadata:
+      labels:
+        app: demo-app10
+        version: 2.1.0
+    spec:
+      containers:
+        - env:
+            - name: SHOP_VERSION
+              value: "1"
+          image: avalcepina/testservice:1.1.0
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 5
+            httpGet:
+              path: /
+              port: 9090
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 20
+          name: deployment3-0
+          ports:
+            - containerPort: 9090
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 600Mi
+            requests:
+              cpu: 400m
+              memory: 100Mi

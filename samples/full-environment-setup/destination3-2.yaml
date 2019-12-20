@@ -1,0 +1,11 @@
+application: demo-app4
+ports:
+  - name: http
+    port: 9090
+    targetPort: 9090
+    protocol: TCP
+policies:
+  - name: SubsetDetectorDestinationPolicy
+    parameters:
+      subset-labels:
+        - version

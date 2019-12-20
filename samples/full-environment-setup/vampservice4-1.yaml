@@ -1,0 +1,8 @@
+gateways:
+  - gw-4
+hosts:
+  - eshop-test1-checkout-au.democluster.net
+exposeInternally: false
+metadata:
+  ui-description: checkout backend for the e-shop
+  ui-service-name: e-shop checkout service

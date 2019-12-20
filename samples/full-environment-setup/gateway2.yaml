@@ -1,0 +1,5 @@
+servers:
+  - port: 80
+    protocol: http
+    hosts:
+      - eshop-test1-deluxe-jp.democluster.net

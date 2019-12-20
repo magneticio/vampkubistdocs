@@ -1,0 +1,8 @@
+gateways:
+  - gw-4
+hosts:
+  - eshop-test1-deluxe-au.democluster.net
+exposeInternally: false
+metadata:
+  ui-description: frontend for deluxe e-shop
+  ui-service-name: e-shop deluxe frontend

@@ -1,0 +1,19 @@
+gateways:
+  - gw-1
+hosts:
+  - eshop-testing2-checkout-eu.democluster.net
+routes:
+  - protocol: http
+    weights:
+      - destination: dest-shop-checkout-svc
+        port: 9090
+        version: 1.1.5
+        weight: 100
+      - destination: dest-shop-checkout-svc
+        port: 9090
+        version: 1.2.5
+        weight: 0
+exposeInternally: false
+metadata:
+  ui-description: checkout backend for the e-shop
+  ui-service-name: e-shop checkout service
