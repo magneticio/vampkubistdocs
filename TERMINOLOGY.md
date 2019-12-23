@@ -1,5 +1,7 @@
 # Terminology
 
+The broader glossary for VAMP (including VampCloud, UI and Kubist) can be found and is maintained here: https://github.com/magneticio/vamp-design-docs/blob/master/01-concepts/01-glossary.md
+
 To get a better understanding of how Kubist works you should keep in mind the meaning of the following terms.
 Most of them overlap completely with Kubernetes or Istio entities, but some don't.
 
