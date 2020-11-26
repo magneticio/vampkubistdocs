@@ -1,6 +1,6 @@
 # Vamp Kubist Preview release
 
-Kubist is a single Docker container that provides a REST API and React-based UI that you can use to:
+Kubist is a single Docker container that provides a REST API that you can use to:
 
 - gradually roll-out a new version of a service;
 - automatically rollback to the original version, in the case of errors and
@@ -19,4 +19,3 @@ To learn more about Vamp Kubist and what it can achieve you can check the follow
 * [Advanced tutorial](ADVANCED_TUTORIAL.md)
 * [Executors and policies](EXECUTORS_AND_POLICIES.md)
 * [Container resource optimizer](OPTIMIZER.md)
-* [API references](API.md)
